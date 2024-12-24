@@ -4,6 +4,7 @@
 #include "KJW/BTTaskNode/FindTarget.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
+#include "KJW/Enemy.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMaterialLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -42,10 +43,18 @@ EBTNodeResult::Type UFindTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 		ACharacter* NewTarget = UGameplayStatics::GetPlayerCharacter(OwnerComp.GetWorld(), 0);
 		if (NewTarget)
 		{
-			float Distance = AIController->GetPawn()->GetDistanceTo(Target);
+			float Distance = AIController->GetPawn()->GetDistanceTo(NewTarget);
+			UE_LOG(LogTemp, Warning, TEXT("%f"), Distance);
 			if (Distance < TargetDistance)
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(TargetKeyName, NewTarget);
+
+				AEnemy* Enemy = Cast<AEnemy>(AIController->GetPawn());
+				if (Enemy)
+				{
+					Enemy->SetTarget(NewTarget);
+				}
+
 				return EBTNodeResult::Succeeded;
 			}
 			else

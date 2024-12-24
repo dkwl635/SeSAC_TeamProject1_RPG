@@ -34,7 +34,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	class USkeletalMeshComponent* SkeletalMeshComponent;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	class UFloatingPawnMovement* FloatingPawnMovement;
 
 public:
@@ -56,5 +56,8 @@ public:
 	//Monster Rot
 	void RotUpdate();
 
+
+	UFUNCTION(BlueprintCallable)
+	void SetTarget(class ACharacter* NewTarget);
 
 };

@@ -86,3 +86,8 @@ void AEnemy::RotUpdate()
 
 }
 
+void AEnemy::SetTarget(ACharacter* NewTarget)
+{
+	TargetCharacter = NewTarget;
+}
+
