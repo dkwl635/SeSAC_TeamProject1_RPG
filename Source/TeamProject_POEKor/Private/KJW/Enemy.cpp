@@ -4,7 +4,7 @@
 #include "KJW/Enemy.h"
 #include "Components/SphereComponent.h"
 #include "Components/SkeletalMeshComponent.h"
-
+#include "Animation/AnimInstance.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
 #include "GameFramework/Character.h"
@@ -32,6 +32,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	
 }
 
@@ -61,9 +62,10 @@ void AEnemy::RotUpdate()
 	FRotator NextRot;
 	
 	FRotator StartRot = GetActorRotation();
-	FRotator EndRot;
+	FRotator EndRot = FRotator::ZeroRotator;
 	float Delta = 0.9;
 	bool bShortestPath = true;
+	
 
 	
 	if (TargetCharacter)
@@ -89,5 +91,25 @@ void AEnemy::RotUpdate()
 void AEnemy::SetTarget(ACharacter* NewTarget)
 {
 	TargetCharacter = NewTarget;
+}
+
+float AEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+
+	if (Hp <= 0)
+	{
+		return 0;
+	}
+
+	Hp -= Damage;
+	UE_LOG(LogTemp, Warning, TEXT("Enemy : %f") , Hp);
+	UE_LOG(LogTemp, Warning, TEXT("Damge : %f") , Damage);
+	if (Hp <= 0)
+	{
+		DieStart();
+	}
+
+	return 0.f;
 }
 

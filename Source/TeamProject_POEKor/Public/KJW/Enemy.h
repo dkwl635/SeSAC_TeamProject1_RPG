@@ -28,22 +28,27 @@ public:
 
 public:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USphereComponent* BodyCollision;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	class USkeletalMeshComponent* SkeletalMeshComponent;
 
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	class UFloatingPawnMovement* FloatingPawnMovement;
 
+
 public:
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
-	float MaxHp = 10;
+	float MaxHp = 10.f;
 
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
-	float Hp = 10;
+	float Hp = 10.f;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AtkPower = 10.f;
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
 
@@ -60,4 +65,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(class ACharacter* NewTarget);
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//int32 Test = 0;
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AttackStart();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AttackEvent();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AttackEnd();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void DieStart();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void DieEnd();
+
+public:
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };

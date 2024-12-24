@@ -12,7 +12,6 @@
 EBTNodeResult::Type UFindTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
-	UE_LOG(LogTemp, Warning, TEXT("AI"));
 
 	UObject* TargetObject = OwnerComp.GetBlackboardComponent()->GetValueAsObject(TargetKeyName);
 	ACharacter* Target = Cast<ACharacter>(TargetObject);
@@ -26,13 +25,14 @@ EBTNodeResult::Type UFindTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 		 //FVector::Distance(ActorLocation, TargetLocation);
 		 float Distance = AIController->GetPawn()->GetDistanceTo(Target);
 		 
-		 if (Distance > AttackDistance)
+		 if (Distance <= AttackDistance)
 		 {
-			 return EBTNodeResult::Succeeded;
+			 return EBTNodeResult::Failed;
+			
 		 }
 		 else
 		 {
-			 return EBTNodeResult::Failed;
+			 return EBTNodeResult::Succeeded;
 		 }
 
 
@@ -44,7 +44,7 @@ EBTNodeResult::Type UFindTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 		if (NewTarget)
 		{
 			float Distance = AIController->GetPawn()->GetDistanceTo(NewTarget);
-			UE_LOG(LogTemp, Warning, TEXT("%f"), Distance);
+			//UE_LOG(LogTemp, Warning, TEXT("%f"), Distance);
 			if (Distance < TargetDistance)
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(TargetKeyName, NewTarget);
