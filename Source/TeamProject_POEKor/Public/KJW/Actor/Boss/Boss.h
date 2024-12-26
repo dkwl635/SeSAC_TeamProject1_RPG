@@ -6,6 +6,16 @@
 #include "GameFramework/Pawn.h"
 #include "Boss.generated.h"
 
+UENUM(BlueprintType)
+enum class EBossState : uint8
+{
+	NONE UMETA(DisplayName = "NONE"),
+	Idle UMETA(DisplayName = "Idle"),
+	NormalAttack UMETA(DisplayName = "NormalAttack"),
+	TrakingTarget UMETA(DisplayName = "TrakingTarget"),
+	
+};
+
 UCLASS()
 class TEAMPROJECT_POEKOR_API ABoss : public APawn
 {
@@ -33,7 +43,80 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USkeletalMeshComponent* SkeletalMeshComponent;
 
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EBossState BossState = EBossState::NONE;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MaxHp = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Hp = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AtkPower = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float TrakingSpeed = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = "NormalAttack")
+	float NormalAttackDistance = 300.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NormalAttack")
+	float NormalAttackCoolTime = 3.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NormalAttack")
+	float NormalAttackCoolTimer = 3.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Idle")
+	float IdleCoolTime = 1.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Idle")
+	float IdleCoolTimer = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float TargetDistance = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ACharacter* TargetCharacter;
+
+	float WorldDeltaTime = 0.f;
+public: 
+
+	void TickBoss();
+	
+	//CheckTarget
+	void CheckDistance();
 
 
+public:
+
+	//Boss Rot
+	void RotUpdate();
+	void TickState();
+	void TickCool();
+	UFUNCTION(BlueprintCallable)
+	void SetTarget(class ACharacter* NewTarget);
+	
+	UFUNCTION(BlueprintCallable)
+	void SetNewState(EBossState NewBossState);
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AttackStart();
+	UFUNCTION(BlueprintImplementableEvent)
+	void AttackEvent();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AttackEnd();
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void DieStart();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void DieEnd();
+
+public:
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+public:
+
+	void TrakingTarget();
 
 };
