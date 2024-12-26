@@ -5,15 +5,15 @@
 
 void ADungeonGameStateBase::StartGame()
 {
-	GameStateText = NSLOCTEXT("GameState", "GameStart", "GameStart");
+	GameStateText = FText::FromString("GameStart");
 }
 
 void ADungeonGameStateBase::GameOver()
 {
-	GameStateText = NSLOCTEXT("GameState", "GaemOver", "GaemOver");
+	GameStateText = FText::FromString("GameOver");
 }
 
 void ADungeonGameStateBase::GameClear()
 {
-	GameStateText = NSLOCTEXT("GameState", "GameClear", "GameClear");
+	GameStateText = FText::FromString("GameClear");
 }
