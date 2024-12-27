@@ -39,7 +39,7 @@ public:
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class USphereComponent* BodyCollision;
+	class UCapsuleComponent* BodyCollision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USkeletalMeshComponent* SkeletalMeshComponent;
@@ -48,6 +48,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EBossState BossState = EBossState::NONE;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AnimMontage")
+	TMap<EBossState, UAnimMontage*> AttackAnimMontage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHp = 10.f;
@@ -63,21 +66,25 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bRotTarget = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RotDelta = 0.02f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsAttackEvent = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = "NormalAttack")
 	float NormalAttackDistance = 300.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NormalAttack")
-	float NormalAttackCoolTime = 3.f;
+	float NormalAttackCoolTime = 1.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NormalAttack")
-	float NormalAttackCoolTimer = 3.f;
+	float NormalAttackCoolTimer = 1.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Idle")
-	float IdleCoolTime = 1.f;
+	float IdleCoolTime = 0.5f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Idle")
-	float IdleCoolTimer = 1.f;
+	float IdleCoolTimer = 0.5f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float TargetDistance = 0.f;
+	float TargetDistance = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
@@ -87,16 +94,14 @@ public:
 
 	void TickBoss();
 	
-	//CheckTarget
-	void CheckDistance();
-
-
 public:
 
 	//Boss Rot
 	void RotUpdate();
 	void TickState();
 	void TickCool();
+	UFUNCTION(BlueprintImplementableEvent)
+	void TickPattern();
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(class ACharacter* NewTarget);
 	
@@ -104,8 +109,8 @@ public:
 	void SetNewState(EBossState NewBossState);
 
 public:
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void AttackStart(EBossState NewBossState);
+	UFUNCTION(BlueprintCallable)
+	bool AttackStart(EBossState AttackBossState);
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void DieStart();
@@ -118,7 +123,13 @@ public:
 public:
 
 	void TrakingTarget();
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable)
+	void ClearAttackEvent();
+	UFUNCTION(BlueprintCallable)
 	void AttackTarget(ACharacter* Charactertarget);
 
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AttackEvent(ACharacter* Charactertarget);
+	UFUNCTION()
+	void EndAnimMontage(UAnimMontage* AnimMontage, bool IsEnded);
 };

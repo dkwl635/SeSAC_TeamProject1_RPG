@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings
 #include "KJW/Actor/Boss/Boss.h"
-#include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+
 
 // Sets default values
 ABoss::ABoss()
@@ -12,7 +13,7 @@ ABoss::ABoss()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	BodyCollision = CreateDefaultSubobject<USphereComponent>(TEXT("BodyCollisiopn"));
+	BodyCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("BodyCollisiopn"));
 	SkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComponent"));
 
 	SetRootComponent(BodyCollision);
@@ -31,6 +32,13 @@ void ABoss::BeginPlay()
 	if (NewTarget)
 	{
 		SetTarget(NewTarget);
+	}
+
+	UAnimInstance* BossAnimInstane = SkeletalMeshComponent->GetAnimInstance();
+	if (BossAnimInstane)
+	{
+		BossAnimInstane->OnMontageEnded.AddDynamic(this, &ThisClass::EndAnimMontage);
+
 	}
 }
 
@@ -56,24 +64,12 @@ void ABoss::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ABoss::TickBoss()
 {
-	//CheckTarget -> TargetDistance
-	CheckDistance();
+	TickState();
 	TickCool();
 	RotUpdate();
-	TickState();
+	TickPattern();
 }
-void ABoss::CheckDistance()
-{
-	if (!TargetCharacter) { return; }
 
-	TargetDistance = GetDistanceTo(TargetCharacter);
-
-	if (TargetDistance <= NormalAttackDistance && (BossState == EBossState::TrakingTarget || BossState == EBossState::Idle))
-	{
-		SetNewState(EBossState::NormalAttack);
-	}
-	
-}
 
 void ABoss::RotUpdate()
 {
@@ -81,7 +77,6 @@ void ABoss::RotUpdate()
 
 	if (bRotTarget)
 	{
-		float Delta = 0.1f;
 		bool bShortestPath = true;
 
 		FVector BossLocation = GetActorLocation();
@@ -93,28 +88,44 @@ void ABoss::RotUpdate()
 		FRotator StartRot = GetActorRotation();
 		FRotator EndRot = UKismetMathLibrary::FindLookAtRotation(BossLocation, TargetLocation);
 
-		FRotator NextRot = UKismetMathLibrary::RLerp(StartRot, EndRot, Delta, bShortestPath);
+		FRotator NextRot = UKismetMathLibrary::RLerp(StartRot, EndRot, RotDelta, bShortestPath);
 		SetActorRotation(NextRot);
 	}
 }
 
 void ABoss::TickState()
 {
-	if (BossState == EBossState::TrakingTarget)
+	if (!TargetCharacter) { return; }
+
+	TargetDistance = GetDistanceTo(TargetCharacter);
+
+	EBossState NewBossState = BossState;
+	if (TargetDistance <= NormalAttackDistance && (BossState == EBossState::TrakingTarget || BossState == EBossState::Idle))
 	{
-		TrakingTarget();
+		NewBossState = EBossState::Idle;
+		if (NormalAttackCoolTimer <= 0)
+		{
+			NewBossState = EBossState::NormalAttack;
+		}
 	}
 
 	if (BossState == EBossState::Idle && IdleCoolTimer < 0)
 	{
-		IdleCoolTimer = IdleCoolTime;
-		SetNewState(EBossState::TrakingTarget);
+		NewBossState = EBossState::TrakingTarget;
+	}
+
+	SetNewState(NewBossState);
+
+
+	if (BossState == EBossState::TrakingTarget)
+	{
+		TrakingTarget();
 	}
 }
 
 void ABoss::TickCool()
 {
-	if (NormalAttackCoolTimer > 0) { NormalAttackCoolTimer -= WorldDeltaTime; }
+	if (NormalAttackCoolTimer > 0 && BossState == EBossState::Idle) { NormalAttackCoolTimer -= WorldDeltaTime; }
 
 	if (IdleCoolTimer > 0 && BossState == EBossState::Idle) { IdleCoolTimer -= WorldDeltaTime; }
 }
@@ -135,23 +146,25 @@ void ABoss::SetNewState(EBossState NewBossState)
 		return;
 	}
 
-	
+	UE_LOG(LogTemp, Warning, TEXT("%d") ,(int32)NewBossState);
 
 	if (NewBossState == EBossState::NormalAttack)
 	{	
-		if (NormalAttackCoolTimer <= 0)
+		bool IsSuccess = AttackStart(EBossState::NormalAttack);
+		if (IsSuccess)
 		{
-			AttackStart(EBossState::NormalAttack);
-			NormalAttackCoolTimer = NormalAttackCoolTime;
+			NewBossState = EBossState::NormalAttack;
 		}
-		else
+		else 
 		{
-			bRotTarget = true;
 			NewBossState = EBossState::Idle;
 		}
+		
+	
 	}
 	else if (NewBossState == EBossState::Idle)
 	{
+		IdleCoolTimer = IdleCoolTime;
 		bRotTarget = true;
 	}
 	else if (NewBossState == EBossState::TrakingTarget)
@@ -161,6 +174,37 @@ void ABoss::SetNewState(EBossState NewBossState)
 
 	BossState = NewBossState;
 }
+
+bool ABoss::AttackStart(EBossState AttackBossState)
+{
+	if (AttackAnimMontage.Contains(AttackBossState))
+	{
+		if (SkeletalMeshComponent->GetAnimInstance())
+		{
+			ClearAttackEvent();
+			UE_LOG(LogTemp, Warning, TEXT("%s End"), *AttackAnimMontage[AttackBossState]->GetName());
+			SkeletalMeshComponent->GetAnimInstance()->Montage_Play(AttackAnimMontage[AttackBossState]);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void ABoss::AttackTarget(ACharacter* Charactertarget)
+{
+	if (!IsAttackEvent)
+	{
+		IsAttackEvent = true;
+		AttackEvent(Charactertarget);
+	}
+	else
+	{
+		return;
+	}
+}
+
+
 
 float ABoss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
@@ -188,4 +232,15 @@ void ABoss::TrakingTarget()
 	FVector EndPos = (WorldDeltaTime * TrakingSpeed) * GetActorForwardVector() + CurrentPos;
 
 	SetActorLocation(EndPos);
+}
+
+void ABoss::ClearAttackEvent()
+{
+	IsAttackEvent = false;
+}
+
+void ABoss::EndAnimMontage(UAnimMontage* AnimMontage , bool IsEnded)
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s End"), *AnimMontage->GetName());
+	SetNewState(EBossState::Idle);
 }
