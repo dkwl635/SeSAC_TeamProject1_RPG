@@ -13,6 +13,7 @@ enum class EBossState : uint8
 	Idle UMETA(DisplayName = "Idle"),
 	NormalAttack UMETA(DisplayName = "NormalAttack"),
 	TrakingTarget UMETA(DisplayName = "TrakingTarget"),
+	Pattern1 UMETA(DisplayName = "Parttern1"),
 	
 };
 
@@ -104,11 +105,7 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void AttackStart();
-	UFUNCTION(BlueprintImplementableEvent)
-	void AttackEvent();
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void AttackEnd();
+	void AttackStart(EBossState NewBossState);
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void DieStart();
@@ -121,5 +118,7 @@ public:
 public:
 
 	void TrakingTarget();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AttackTarget(ACharacter* Charactertarget);
 
 };

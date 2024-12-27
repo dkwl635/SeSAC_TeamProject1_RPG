@@ -141,7 +141,7 @@ void ABoss::SetNewState(EBossState NewBossState)
 	{	
 		if (NormalAttackCoolTimer <= 0)
 		{
-			AttackStart();
+			AttackStart(EBossState::NormalAttack);
 			NormalAttackCoolTimer = NormalAttackCoolTime;
 		}
 		else
