@@ -60,6 +60,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TrakingSpeed = 300.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bRotTarget = true;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = "NormalAttack")
 	float NormalAttackDistance = 300.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NormalAttack")

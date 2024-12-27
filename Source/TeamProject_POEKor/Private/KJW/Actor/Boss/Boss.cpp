@@ -79,9 +79,9 @@ void ABoss::RotUpdate()
 {
 	if (!TargetCharacter) { return; }
 
-	if (BossState == EBossState::TrakingTarget)
+	if (bRotTarget)
 	{
-		float Delta = 0.8f;
+		float Delta = 0.1f;
 		bool bShortestPath = true;
 
 		FVector BossLocation = GetActorLocation();
@@ -146,12 +146,17 @@ void ABoss::SetNewState(EBossState NewBossState)
 		}
 		else
 		{
+			bRotTarget = true;
 			NewBossState = EBossState::Idle;
 		}
 	}
 	else if (NewBossState == EBossState::Idle)
 	{
-		
+		bRotTarget = true;
+	}
+	else if (NewBossState == EBossState::TrakingTarget)
+	{
+		bRotTarget = true;
 	}
 
 	BossState = NewBossState;
