@@ -13,7 +13,7 @@ enum class EBossState : uint8
 	Idle UMETA(DisplayName = "Idle"),
 	NormalAttack UMETA(DisplayName = "NormalAttack"),
 	TrakingTarget UMETA(DisplayName = "TrakingTarget"),
-	Pattern1 UMETA(DisplayName = "Parttern1"),
+	Pattern1 UMETA(DisplayName = "Pattern1"),
 	
 };
 
@@ -45,13 +45,13 @@ public:
 	class USkeletalMeshComponent* SkeletalMeshComponent;
 
 public:
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	EBossState BossState = EBossState::NONE;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AnimMontage")
 	TMap<EBossState, UAnimMontage*> AttackAnimMontage;
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHp = 10.f;
 
@@ -60,51 +60,61 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AtkPower = 10.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float TrakingSpeed = 300.f;
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float RotSpeed = 0.02f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool IsAttackEvent = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float PlayMontageLength = 0.f;
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bRotTarget = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float RotDelta = 0.02f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsAttackEvent = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite , Category = "NormalAttack")
-	float NormalAttackDistance = 300.f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NormalAttack")
-	float NormalAttackCoolTime = 1.f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NormalAttack")
-	float NormalAttackCoolTimer = 1.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Idle")
+protected:
+	UPROPERTY(EditAnywhere, Category = "Idle")
 	float IdleCoolTime = 0.5f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Idle")
+	UPROPERTY(EditAnywhere, Category = "Idle")
 	float IdleCoolTimer = 0.5f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+protected:
+	UPROPERTY(EditAnywhere , BlueprintReadOnly ,Category = "Pattern1")
+	float Pattern1Distance = 600.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pattern1")
+	float Pattern1CoolTimer = 1.f;
+	UPROPERTY(EditAnywhere, Category = "Pattern1")
+	float Pattern1CoolTime = 5.f;
+protected:
+	UPROPERTY(EditAnywhere, Category = "NormalAttack")
+	float NormalAttackDistance = 300.f;
+	UPROPERTY(EditAnywhere, Category = "NormalAttack")
+	float NormalAttackCoolTime = 1.f;
+	UPROPERTY(EditAnywhere, Category = "NormalAttack")
+	float NormalAttackCoolTimer = 1.f;
+protected:
+	UPROPERTY(BlueprintReadOnly)
 	float TargetDistance = 100.f;
+private:
+	float WorldDeltaTime = 0.f;
+	float OrginRotSpeed = 0.f;
 
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
-
-	float WorldDeltaTime = 0.f;
 public: 
 
 	void TickBoss();
 	
 public:
 
-	//Boss Rot
 	void RotUpdate();
 	void TickState();
 	void TickCool();
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void TickPattern();
 	UFUNCTION(BlueprintCallable)
 	void SetTarget(class ACharacter* NewTarget);
-	
 	UFUNCTION(BlueprintCallable)
 	void SetNewState(EBossState NewBossState);
 
@@ -119,17 +129,29 @@ public:
 
 public:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+private:
+	void TrakingTarget();
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void SetAttackCollision(bool OnOff);
 
-	void TrakingTarget();
 	UFUNCTION(BlueprintCallable)
 	void ClearAttackEvent();
 	UFUNCTION(BlueprintCallable)
 	void AttackTarget(ACharacter* Charactertarget);
-
+	UFUNCTION(BlueprintCallable)
+	void SetRotSpeed(float NewSpeed);
+protected: 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void AttackEvent(ACharacter* Charactertarget);
+	
+
 	UFUNCTION()
 	void EndAnimMontage(UAnimMontage* AnimMontage, bool IsEnded);
+public:
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Pattern")
+	bool IsStartPattern1();
+
 };
