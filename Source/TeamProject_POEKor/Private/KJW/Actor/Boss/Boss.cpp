@@ -68,6 +68,8 @@ void ABoss::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ABoss::TickBoss()
 {
+	if (BossState == EBossState::Death) { return; }
+
 	TickState();
 	TickCool();
 	RotUpdate();
@@ -78,6 +80,7 @@ void ABoss::TickBoss()
 void ABoss::RotUpdate()
 {
 	if (!TargetCharacter) { return; }
+
 
 	if (bRotTarget)
 	{
@@ -100,6 +103,7 @@ void ABoss::RotUpdate()
 void ABoss::TickState()
 {
 	if (!TargetCharacter) { return; }
+	
 
 	TargetDistance = GetDistanceTo(TargetCharacter);
 
@@ -140,6 +144,8 @@ void ABoss::TickState()
 
 void ABoss::TickCool()
 {
+
+
 	if (NormalAttackCoolTimer > 0 && BossState == EBossState::Idle) { NormalAttackCoolTimer -= WorldDeltaTime; }
 	if (IdleCoolTimer > 0 && BossState == EBossState::Idle) { IdleCoolTimer -= WorldDeltaTime; }
 	if (Pattern1CoolTimer > 0 && BossState != EBossState::Pattern1) { Pattern1CoolTimer -= WorldDeltaTime; }
@@ -187,26 +193,44 @@ void ABoss::SetNewState(EBossState NewBossState)
 		RotSpeed = OrginRotSpeed;
 		bRotTarget = true;
 	}
+	else if (NewBossState == EBossState::Death)
+	{
+		DieStart();
+	}
 
 	BossState = NewBossState;
 }
 
 bool ABoss::AttackStart(EBossState AttackBossState)
 {
-	
-	if (AttackAnimMontage.Contains(AttackBossState))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AttackStart"));
-		if (SkeletalMeshComponent->GetAnimInstance())
-		{
-			ClearAttackEvent();
-			UE_LOG(LogTemp, Warning, TEXT("%s End"), *AttackAnimMontage[AttackBossState]->GetName());
-			PlayMontageLength = SkeletalMeshComponent->GetAnimInstance()->Montage_Play(AttackAnimMontage[AttackBossState]);
-			return true;
-		}
-	}
+	ClearAttackEvent();
+	return StartBossAnim(AttackBossState);
+}
 
+bool ABoss::StartBossAnim(EBossState StartBossState)
+{
+	if (SkeletalMeshComponent->GetAnimInstance())
+	{
+		if (AttackAnimMontage.Contains(StartBossState))
+		{
+		PlayMontageLength = SkeletalMeshComponent->GetAnimInstance()->Montage_Play(AttackAnimMontage[StartBossState]);
+		return true;
+		}
+
+	}
 	return false;
+}
+
+void ABoss::DieStart()
+{
+	if (StartBossAnim(EBossState::Death))
+	{
+
+	}
+}
+
+void ABoss::DieEnd()
+{
 }
 
 void ABoss::AttackTarget(ACharacter* Charactertarget)
@@ -227,7 +251,9 @@ void ABoss::AttackTarget(ACharacter* Charactertarget)
 float ABoss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
-
+	
+	if (BossState == EBossState::Death) { return 0; }
+	
 	if (Hp <= 0)
 	{
 		return 0;
@@ -238,7 +264,8 @@ float ABoss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 	UE_LOG(LogTemp, Warning, TEXT("Damge : %f"), Damage);
 	if (Hp <= 0)
 	{
-		DieStart();
+		SetNewState(EBossState::Death);
+		//DieStart();
 	}
 
 	return 0.f;
@@ -274,6 +301,22 @@ void ABoss::SetRotSpeed(float NewSpeed)
 
 void ABoss::EndAnimMontage(UAnimMontage* AnimMontage , bool IsEnded)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s End"), *AnimMontage->GetName());
-	SetNewState(EBossState::Idle);
+	if (BossState == EBossState::Death)
+	{
+		return;
+	}
+
+	if (IsEnded == true)
+	{
+		SetNewState(EBossState::Idle);
+		return;
+	}
+	else if (IsEnded == false)
+	{
+		SetNewState(EBossState::Idle);
+		return;
+	}
+
+	
 }
+

@@ -10,6 +10,7 @@ UENUM(BlueprintType)
 enum class EBossState : uint8
 {
 	NONE UMETA(DisplayName = "NONE"),
+	Death UMETA(DisplayName = "Death"),
 	Idle UMETA(DisplayName = "Idle"),
 	NormalAttack UMETA(DisplayName = "NormalAttack"),
 	TrakingTarget UMETA(DisplayName = "TrakingTarget"),
@@ -30,7 +31,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -78,7 +79,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Idle")
 	float IdleCoolTimer = 0.5f;
 protected:
-	UPROPERTY(EditAnywhere , BlueprintReadOnly ,Category = "Pattern1")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pattern1")
 	float Pattern1Distance = 600.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pattern1")
 	float Pattern1CoolTimer = 1.f;
@@ -101,10 +102,10 @@ private:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
-public: 
+public:
 
 	void TickBoss();
-	
+
 public:
 
 	void RotUpdate();
@@ -117,14 +118,17 @@ public:
 	void SetTarget(class ACharacter* NewTarget);
 	UFUNCTION(BlueprintCallable)
 	void SetNewState(EBossState NewBossState);
-
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void AnimNotifyEvent();
 public:
 	UFUNCTION(BlueprintCallable)
 	bool AttackStart(EBossState AttackBossState);
+	UFUNCTION(BlueprintCallable)
+	bool StartBossAnim(EBossState StartBossState);
 
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable)
 	void DieStart();
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	UFUNCTION(BlueprintCallable)
 	void DieEnd();
 
 public:
@@ -142,16 +146,19 @@ public:
 	void AttackTarget(ACharacter* Charactertarget);
 	UFUNCTION(BlueprintCallable)
 	void SetRotSpeed(float NewSpeed);
-protected: 
+protected:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void AttackEvent(ACharacter* Charactertarget);
-	
 
 	UFUNCTION()
 	void EndAnimMontage(UAnimMontage* AnimMontage, bool IsEnded);
+
+
 public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Pattern")
 	bool IsStartPattern1();
+
+
 
 };
