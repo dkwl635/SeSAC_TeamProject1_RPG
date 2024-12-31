@@ -9,6 +9,18 @@
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class EPOEGameState : uint8
+{
+	NONE UMETA(DisplayName = "NONE"),
+	GameReady UMETA(DisplayName = "GameReady"),
+	GameIng UMETA(DisplayName = "GameIng"),
+	GameOver UMETA(DisplayName = "GameOver"),
+	GameClear UMETA(DisplayName = "GameClear"),
+	
+
+};
+
 UCLASS()
 class TEAMPROJECT_POEKOR_API ADungeonGameStateBase : public AGameStateBase
 {
@@ -17,8 +29,14 @@ class TEAMPROJECT_POEKOR_API ADungeonGameStateBase : public AGameStateBase
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FText GameStateText;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	EPOEGameState CurGameState = EPOEGameState::NONE;
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void ChangeGameState(EPOEGameState NewGameState);
+protected:
+
 	UFUNCTION(BlueprintCallable)
 	void StartGame();
 
@@ -27,4 +45,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void GameClear();
+
+	
+
 };

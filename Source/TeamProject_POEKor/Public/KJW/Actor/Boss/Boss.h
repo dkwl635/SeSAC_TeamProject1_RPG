@@ -44,6 +44,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class USkeletalMeshComponent* SkeletalMeshComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName BossName = "Boss";
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -134,6 +137,11 @@ public:
 	//Start Die Event
 	UFUNCTION(BlueprintCallable)
 	void DieStart();
+
+	//StartDeathEffect
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void StartDeathEffect();
+
 	//End Die Event
 	UFUNCTION(BlueprintCallable)
 	void DieEnd();
@@ -159,8 +167,8 @@ protected:
 	void AttackEvent(ACharacter* Charactertarget);
 	UFUNCTION()
 	void EndAnimMontage(UAnimMontage* AnimMontage, bool IsEnded);
-
-
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	bool IsStartPattern1();
 public:
 
 

@@ -225,7 +225,7 @@ void ABoss::DieStart()
 {
 	if (StartBossAnim(EBossState::Death))
 	{
-
+		StartDeathEffect();
 	}
 }
 
