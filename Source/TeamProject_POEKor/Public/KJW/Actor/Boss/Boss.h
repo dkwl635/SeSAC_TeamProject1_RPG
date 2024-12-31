@@ -103,13 +103,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
 public:
-
+	//Tick Boss Function
 	void TickBoss();
 
 public:
-
+	//Rotate towards target
 	void RotUpdate();
+	//On the state Tick
 	void TickState();
+	//Cool Time tick
 	void TickCool();
 
 	UFUNCTION(BlueprintImplementableEvent)
@@ -118,16 +120,21 @@ public:
 	void SetTarget(class ACharacter* NewTarget);
 	UFUNCTION(BlueprintCallable)
 	void SetNewState(EBossState NewBossState);
+	//Anim Event Check
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void AnimNotifyEvent();
 public:
+	//Check Attackable
 	UFUNCTION(BlueprintCallable)
 	bool AttackStart(EBossState AttackBossState);
+	//StartAnimMontage Function
 	UFUNCTION(BlueprintCallable)
 	bool StartBossAnim(EBossState StartBossState);
 
+	//Start Die Event
 	UFUNCTION(BlueprintCallable)
 	void DieStart();
+	//End Die Event
 	UFUNCTION(BlueprintCallable)
 	void DieEnd();
 
@@ -147,17 +154,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetRotSpeed(float NewSpeed);
 protected:
+
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void AttackEvent(ACharacter* Charactertarget);
-
 	UFUNCTION()
 	void EndAnimMontage(UAnimMontage* AnimMontage, bool IsEnded);
 
 
 public:
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Pattern")
-	bool IsStartPattern1();
 
 
 
