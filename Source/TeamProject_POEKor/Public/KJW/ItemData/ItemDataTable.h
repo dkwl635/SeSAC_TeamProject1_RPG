@@ -27,7 +27,7 @@ enum class EItemGrade : uint8
     Legendary = 4 UMETA(DisplayName = "Legendary"),
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct  TEAMPROJECT_POEKOR_API FItemData : public FTableRowBase
 {
     GENERATED_BODY()
@@ -53,12 +53,16 @@ public:
 public:
     UPROPERTY(EditAnywhere , BlueprintReadWrite)
     FDataTableRowHandle StatusData;
+
+public:
+    FItemData& operator=(const FItemData& Other);
+
 };
 
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class TEAMPROJECT_POEKOR_API UItemDataTable : public UDataTable
 {
 	GENERATED_BODY()
