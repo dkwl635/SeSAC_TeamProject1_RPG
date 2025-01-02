@@ -10,9 +10,8 @@ UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQ
     if (GetItemData(NewItemData, UniqueID))
     {
         UItemBase* NewItem = NewObject<UItemBase>();
-        NewItem->ItemData = NewItemData;
-        UE_LOG(LogTemp, Warning, TEXT("%d , %s"), NewItem->GetUniqueID(), *NewItem->GetItemName().ToString());
-        NewItem->CurrentQuantity = CurrentQuantity;
+        NewItem->InitializeItem(NewItemData, CurrentQuantity);
+        UE_LOG(LogTemp, Warning, TEXT("NewItem %s"), *NewItem->GetItemName().ToString());
         return NewItem;
     }
 

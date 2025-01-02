@@ -43,7 +43,9 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     int32 MaxQuantity = 0;
-
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D* ItemIcon = nullptr;
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FText ItemName;
@@ -55,7 +57,7 @@ public:
     FDataTableRowHandle StatusData;
 
 public:
-    FItemData& operator=(const FItemData& Other);
+    void Copy(FItemData& OtherItem);
 
 };
 
