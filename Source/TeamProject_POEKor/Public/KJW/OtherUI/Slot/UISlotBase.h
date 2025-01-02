@@ -9,9 +9,22 @@
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class EUISlotType : uint8
+{
+	NONE = 0 UMETA(DisplayName = "NONE"),
+	Inven = 1 UMETA(DisplayName = "Inven"),
+};
+
+
 UCLASS()
 class TEAMPROJECT_POEKOR_API UUISlotBase : public UUserWidget
 {
 	GENERATED_BODY()
 	
+
+protected: 
+	UPROPERTY(VisibleAnywhere)
+	EUISlotType SlotType = EUISlotType::NONE;
+
 };

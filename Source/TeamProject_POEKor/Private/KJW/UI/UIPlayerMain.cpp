@@ -21,8 +21,23 @@ void UUIPlayerMain::NativeConstruct()
 				UE_LOG(LogTemp, Error, TEXT("Contains UIType"));
 			}
 
-			UIMap.Add(UIType, NewUI);
-			NewUI->AddToViewport(1);
+			UIMap.Add(UIType, NewUI);		
 		}
+	}
+}
+
+void UUIPlayerMain::ShowUI(EUIType UIType)
+{
+	if (UIMap.Contains(UIType))
+	{
+		UIMap[UIType]->ShowUI();
+	}
+}
+
+void UUIPlayerMain::ToggleUI(EUIType UIType)
+{
+	if (UIMap.Contains(UIType))
+	{
+		UIMap[UIType]->ToggleUI();
 	}
 }

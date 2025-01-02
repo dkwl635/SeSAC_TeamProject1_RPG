@@ -48,4 +48,10 @@ public:
 public:
 
 	virtual void NativeConstruct() override;
+
+	UFUNCTION(BlueprintCallable)
+	void ShowUI(EUIType UIType);
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleUI(EUIType UIType);
 };

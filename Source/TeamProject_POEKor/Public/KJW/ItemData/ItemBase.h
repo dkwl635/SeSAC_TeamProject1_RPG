@@ -38,4 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual EItemGrade GetItemGrade() const { return ItemData.ItemGrade; }
 
+	UFUNCTION(BlueprintCallable)
+	virtual UTexture2D* GetItemIcon() const { return ItemData.ItemIcon; }
+
 };

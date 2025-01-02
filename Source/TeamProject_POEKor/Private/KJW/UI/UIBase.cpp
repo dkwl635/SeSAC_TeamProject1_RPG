@@ -10,6 +10,7 @@ void UUIBase::InitUI()
 void UUIBase::ShowUI()
 {
 	if (bIsInit == false) { InitUI(); bIsInit = true; }
+
 }
 
 void UUIBase::RefreshUI()
@@ -26,5 +27,16 @@ void UUIBase::TopUI()
 
 bool UUIBase::ToggleUI()
 {
-	return true;
+	if (this->GetVisibility() == ESlateVisibility::Hidden)
+	{
+		this->RemoveFromParent();
+		return false;
+	}
+	else
+	{
+		this->AddToViewport();
+		return true;
+	}
+
+	
 }

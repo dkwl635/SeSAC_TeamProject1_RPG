@@ -33,8 +33,33 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	// ...
 }
 
+void UInventoryComponent::InitInventory()
+{
+	Inven.Init(nullptr, InventoryMax);
+}
+
 void UInventoryComponent::AddItem(UItemBase* NewItemBase)
 {
-	Inven.Add(NewItemBase);
+	for (int32 i = 0; i < InventoryMax; i++)
+	{
+		if (Inven[i] == nullptr)
+		{
+			Inven[i] = NewItemBase;
+			break;
+		}
+	}
+
+	//Inven.Add(NewItemBase);
+
+	if (OnInventoryChanged.IsBound())
+	{
+		OnInventoryChanged.Broadcast();
+	}
+
+}
+
+const TArray<class UItemBase*>& UInventoryComponent::GetInven() 
+{
+	return Inven;
 }
 

@@ -7,6 +7,9 @@
 #include "InventoryComponent.generated.h"
 
 
+// No arguments
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryChanged);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TEAMPROJECT_POEKOR_API UInventoryComponent : public UActorComponent
 {
@@ -24,12 +27,27 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+
+public:
+	UPROPERTY(VisibleAnywhere)
+	int32 InventoryMax = 20;
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void InitInventory();
+
 protected :
 	UPROPERTY(VisibleAnywhere, Instanced)
 	TArray<class UItemBase*> Inven;
 
 public:
 	void AddItem(class UItemBase* NewItemBase);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnInventoryChanged OnInventoryChanged;
+
+public:
+	const TArray<class UItemBase*>& GetInven();
 
 };
 
