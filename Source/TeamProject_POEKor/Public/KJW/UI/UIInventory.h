@@ -30,6 +30,7 @@ protected:
 
 public:
 	virtual void ShowUI() override;
+	virtual void HideUI() override;
 
 private:
 	UFUNCTION()

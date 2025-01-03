@@ -41,4 +41,8 @@ public:
 	void SetSlot(class UItemBase* ItemBase);
 	
 	void OnOffHoverImage(bool bOnHover);
+
+public:
+	virtual	bool IsMoveSlot() override;
+
 };

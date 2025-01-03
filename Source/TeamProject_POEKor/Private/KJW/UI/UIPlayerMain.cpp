@@ -21,7 +21,10 @@ void UUIPlayerMain::NativeConstruct()
 				UE_LOG(LogTemp, Error, TEXT("Contains UIType"));
 			}
 
-			UIMap.Add(UIType, NewUI);		
+			UIMap.Add(UIType, NewUI);	
+			NewUI->AddToViewport();
+		
+			NewUI->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

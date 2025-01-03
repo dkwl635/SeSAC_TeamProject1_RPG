@@ -3,3 +3,7 @@
 
 #include "KJW/OtherUI/Slot/UISlotBase.h"
 
+bool UUISlotBase::IsMoveSlot()
+{
+    return false;
+}

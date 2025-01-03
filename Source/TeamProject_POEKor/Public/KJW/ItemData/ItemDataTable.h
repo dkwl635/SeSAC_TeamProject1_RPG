@@ -18,6 +18,16 @@ enum class EItemType : uint8
 };
 
 UENUM(BlueprintType)
+enum class EGearType : uint8
+{
+    NONE = 0 UMETA(DisplayName = "NONE"),
+    Weapon = 1 UMETA(DisplayName = "Weapon"),
+    Hat = 2 UMETA(DisplayName = "Hat"),
+    Armor = 3 UMETA(DisplayName = "Armor"),
+};
+
+
+UENUM(BlueprintType)
 enum class EItemGrade : uint8
 {
     NONE = 0 UMETA(DisplayName = "NONE"),
@@ -58,6 +68,20 @@ public:
 
 public:
     void Copy(FItemData& OtherItem);
+
+};
+
+
+USTRUCT(BlueprintType)
+struct FGearStatus : public FTableRowBase
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    EGearType GearType;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 AddState;
 
 };
 

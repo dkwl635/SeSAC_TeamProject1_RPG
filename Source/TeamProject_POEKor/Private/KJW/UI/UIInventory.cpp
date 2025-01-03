@@ -43,8 +43,6 @@ void UUIInventory::ShowUI()
 {
 	Super::ShowUI();
 
-	this->AddToViewport();
-
 	for (int i = 0; i < InvenSlots.Num(); i++)
 	{
 		InvenSlots[i]->OnOffHoverImage(false);
@@ -53,10 +51,13 @@ void UUIInventory::ShowUI()
 	SetInvenSlots();
 }
 
+void UUIInventory::HideUI()
+{
+	Super::HideUI();
+}
+
 void UUIInventory::SetInvenSlots()
 {
-	if (!GetParent()) { return; }
-
 	if (PlayerInven)
 	{
 		const TArray<UItemBase*>& Inven = PlayerInven->GetInven();

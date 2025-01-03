@@ -27,8 +27,8 @@ void UInvenSlot::SetSlot(UItemBase* ItemBase)
 	}
 	else
 	{
-		ItemIcon->SetVisibility(ESlateVisibility::Collapsed);
-		ItemEffect->SetVisibility(ESlateVisibility::Collapsed);
+		ItemIcon->SetVisibility(ESlateVisibility::Hidden);
+		ItemEffect->SetVisibility(ESlateVisibility::Hidden);
 
 	}
 }
@@ -41,6 +41,12 @@ void UInvenSlot::OnOffHoverImage(bool bOnHover)
 	}
 	else
 	{
-		SlotHoverFrame->SetVisibility(ESlateVisibility::Collapsed);
+		SlotHoverFrame->SetVisibility(ESlateVisibility::Hidden);
 	}
+}
+
+bool UInvenSlot::IsMoveSlot()
+{
+	return ItemIcon->GetVisibility() == ESlateVisibility::Visible;
+	
 }

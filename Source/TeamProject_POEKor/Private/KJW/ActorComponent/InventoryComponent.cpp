@@ -53,6 +53,7 @@ void UInventoryComponent::AddItem(UItemBase* NewItemBase)
 
 	if (OnInventoryChanged.IsBound())
 	{
+		
 		OnInventoryChanged.Broadcast();
 	}
 

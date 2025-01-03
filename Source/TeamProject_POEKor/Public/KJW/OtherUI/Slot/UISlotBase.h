@@ -27,4 +27,8 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	EUISlotType SlotType = EUISlotType::NONE;
 
+public:
+	UFUNCTION(BlueprintCallable)
+	virtual	bool IsMoveSlot();
+
 };
