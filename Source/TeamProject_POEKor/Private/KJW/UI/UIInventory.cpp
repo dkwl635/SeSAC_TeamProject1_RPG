@@ -7,6 +7,11 @@
 #include "Components/UniformGridPanel.h"
 #include "Components/UniformGridSlot.h"
 
+UUIInventory::UUIInventory()
+{
+	UIType = EUIType::Inven;
+}
+
 void UUIInventory::InitUI()
 {
 	Super::InitUI();

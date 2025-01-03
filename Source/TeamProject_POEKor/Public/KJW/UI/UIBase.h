@@ -9,6 +9,16 @@
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class EUIType : uint8
+{
+	NONE = 0 UMETA(DisplayName = "NONE"),
+	Inven = 1 UMETA(DisplayName = "Inven"),
+	PlayerInfo = 2 UMETA(DisplayName = "PlayerInfo"),
+	EUIMax = 10 UMETA(DisplayName = "EUIMax")
+};
+
+
 UCLASS()
 class TEAMPROJECT_POEKOR_API UUIBase : public UUserWidget
 {
@@ -17,6 +27,11 @@ class TEAMPROJECT_POEKOR_API UUIBase : public UUserWidget
 protected:
 	bool bIsInit = false;
 	virtual void InitUI();
+protected:
+	UPROPERTY(VisibleAnywhere)
+	EUIType UIType = EUIType::NONE;
+public:
+	EUIType GetUIType() { return UIType; }
 public:
 	
 	virtual void ShowUI();

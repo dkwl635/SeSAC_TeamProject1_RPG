@@ -4,24 +4,30 @@
 
 #include "CoreMinimal.h"
 #include "KJW/OtherUI/Slot/UISlotBase.h"
-#include "InvenSlot.generated.h"
+#include "KJW/ItemData/ItemDataTable.h"
+#include "GearSlot.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TEAMPROJECT_POEKOR_API UInvenSlot : public UUISlotBase
+class TEAMPROJECT_POEKOR_API UGearSlot : public UUISlotBase
 {
 	GENERATED_BODY()
+
 public:
-	UInvenSlot();
+	UGearSlot();
+
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UImage* SlotBG;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UImage* ItemIcon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UImage* GearIcon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UImage* ItemEffect;
@@ -32,16 +38,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UImage* SlotHoverFrame;
 
-protected:
-	UPROPERTY(VisibleAnywhere)
-	int32 SlotIndex = 0;
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EGearType GearType = EGearType::NONE;
 
 public:
-	void SetSlotIndex(int32 NewSlotIndex);
-	void SetSlot(class UItemBase* ItemBase);
+	void SetSlot(const class UItemBase* ItemBase);
 	void OnOffHoverImage(bool bOnHover);
 
 public:
 	virtual	bool IsMoveSlot() override;
-
+	
 };

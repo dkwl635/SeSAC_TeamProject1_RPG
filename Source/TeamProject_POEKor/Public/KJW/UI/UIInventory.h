@@ -15,9 +15,12 @@ class TEAMPROJECT_POEKOR_API UUIInventory : public UUIBase
 	GENERATED_BODY()
 	
 public:
+	UUIInventory();
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UUniformGridPanel* SlotUniformGridPanel;
 	
+
 protected:
 	UPROPERTY()
 	TArray<class UInvenSlot*> InvenSlots;
@@ -32,7 +35,7 @@ public:
 	virtual void ShowUI() override;
 	virtual void HideUI() override;
 
-private:
+protected:
 	UFUNCTION()
 	void SetInvenSlots();
 

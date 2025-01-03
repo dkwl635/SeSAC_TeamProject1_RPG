@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "KJW/ItemData/ItemDataTable.h"
 #include "InventoryComponent.generated.h"
 
 
@@ -40,14 +41,20 @@ protected :
 	UPROPERTY(VisibleAnywhere, Instanced)
 	TArray<class UItemBase*> Inven;
 
+	UPROPERTY(VisibleAnywhere, Instanced)
+	TMap<EGearType, class UItemBase*> PlayerEqGears;
+
 public:
 	void AddItem(class UItemBase* NewItemBase);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnInventoryChanged OnInventoryChanged;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnInventoryChanged OnGearChanged;
+
 public:
 	const TArray<class UItemBase*>& GetInven();
-
+	const UItemBase* const GetGearItem(EGearType GearType);
 };
 

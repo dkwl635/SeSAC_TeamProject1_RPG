@@ -36,6 +36,10 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 void UInventoryComponent::InitInventory()
 {
 	Inven.Init(nullptr, InventoryMax);
+
+	PlayerEqGears.Add(EGearType::Weapon , nullptr);
+	PlayerEqGears.Add(EGearType::Hat , nullptr);
+	PlayerEqGears.Add(EGearType::Armor , nullptr);
 }
 
 void UInventoryComponent::AddItem(UItemBase* NewItemBase)
@@ -62,5 +66,14 @@ void UInventoryComponent::AddItem(UItemBase* NewItemBase)
 const TArray<class UItemBase*>& UInventoryComponent::GetInven() 
 {
 	return Inven;
+}
+
+const UItemBase* const UInventoryComponent::GetGearItem(EGearType GearType)
+{
+	if (PlayerEqGears.Contains(GearType))
+	{
+		return PlayerEqGears[GearType];
+	}
+	return nullptr;
 }
 
