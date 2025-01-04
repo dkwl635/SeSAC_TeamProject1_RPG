@@ -10,9 +10,6 @@ void UUIPlayerMain::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	UUISlotBase::IsOnClickedSlot = false;
-	UUISlotBase::ClickedSlot = nullptr;
-
 
 	if (!WidgetTree)
 	{
@@ -47,9 +44,6 @@ void UUIPlayerMain::NativeConstruct()
 void UUIPlayerMain::NativeDestruct()
 {
 	Super::NativeDestruct();
-	
-	UUISlotBase::IsOnClickedSlot = false;
-	UUISlotBase::ClickedSlot = nullptr;
 
 }
 

@@ -24,11 +24,6 @@ class TEAMPROJECT_POEKOR_API UUISlotBase : public UUserWidget
 	GENERATED_BODY()
 	
 
-public:
-	static bool IsOnClickedSlot;
-	static UUISlotBase* ClickedSlot;
-
-
 protected: 
 	UPROPERTY(VisibleAnywhere)
 	EUISlotType SlotType = EUISlotType::NONE;
@@ -40,12 +35,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual	bool IsShowParent();
 	UFUNCTION(BlueprintCallable)
+	virtual bool IsEmptySlot();
+
+	UFUNCTION(BlueprintCallable)
 	void SetParent(UUserWidget* NewParent);
 
-
+	EUISlotType GetSlotType() { return SlotType; }
 public:
 	UFUNCTION(BlueprintCallable)
 	void OnClickedSlot();
+
 
 
 };

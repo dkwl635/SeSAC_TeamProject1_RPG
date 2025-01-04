@@ -67,7 +67,7 @@ public:
     FDataTableRowHandle StatusData;
 
 public:
-    void Copy(FItemData& OtherItem);
+   void Copy(const FItemData& OtherItem);
 
 };
 
@@ -78,11 +78,12 @@ struct FGearStatus : public FTableRowBase
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    EGearType GearType;
+    EGearType GearType = EGearType::NONE;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 AddState;
-
+    int32 AddState = 0;
+public:
+    void Copy(const FGearStatus& OtherItem);
 };
 
 /**

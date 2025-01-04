@@ -55,6 +55,15 @@ public:
 
 public:
 	const TArray<class UItemBase*>& GetInven();
-	const UItemBase* const GetGearItem(EGearType GearType);
+	UItemBase* const GetInvenItem(int32 InvenIndex);
+	UItemBase* const GetGearItem(EGearType GearType);
+
+public:
+	void ClearInvenItem(int32 InvenIndex);
+
+	void EquipGear(EGearType GearType , UItemBase* GearItem);
+	void UnEquipGear(EGearType GearType);
+
+
 };
 

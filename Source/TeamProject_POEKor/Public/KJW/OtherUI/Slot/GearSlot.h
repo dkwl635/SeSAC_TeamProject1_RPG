@@ -48,5 +48,6 @@ public:
 
 public:
 	virtual	bool IsMoveSlot() override;
+	virtual bool IsEmptySlot() override;
 	
 };

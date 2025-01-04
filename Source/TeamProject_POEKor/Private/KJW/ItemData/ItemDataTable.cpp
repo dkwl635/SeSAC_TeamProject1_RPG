@@ -4,7 +4,7 @@
 #include "KJW/ItemData/ItemDataTable.h"
 
 
-void FItemData::Copy(FItemData& OtherItem)
+void FItemData::Copy(const FItemData& OtherItem)
 {
     UniqueID = OtherItem.UniqueID;
     ItemType = OtherItem.ItemType;
@@ -17,5 +17,14 @@ void FItemData::Copy(FItemData& OtherItem)
 
     StatusData = OtherItem.StatusData;
 
+
+}
+
+void FGearStatus::Copy(const FGearStatus& OtherItem)
+{
+    
+    GearType = OtherItem.GearType;
+
+    AddState = OtherItem.AddState;
 
 }

@@ -42,5 +42,10 @@ void UGearSlot::OnOffHoverImage(bool bOnHover)
 
 bool UGearSlot::IsMoveSlot()
 {
-	return ItemIcon->GetVisibility() == ESlateVisibility::Visible;
+	return true;
+}
+
+bool UGearSlot::IsEmptySlot()
+{
+	return ItemIcon->GetVisibility() ==ESlateVisibility::Hidden;
 }

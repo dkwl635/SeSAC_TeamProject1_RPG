@@ -10,6 +10,16 @@ UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQ
     if (GetItemData(NewItemData, UniqueID))
     {
         UItemBase* NewItem = NewObject<UItemBase>();
+        if (NewItemData.ItemType == EItemType::Gear)
+        {
+            NewItem = NewObject<UGearItem>();
+        }
+        else
+        {
+            NewItem = NewObject<UItemBase>();
+        }
+
+       
         NewItem->InitializeItem(NewItemData, CurrentQuantity);
         UE_LOG(LogTemp, Warning, TEXT("NewItem %s"), *NewItem->GetItemName().ToString());
         return NewItem;

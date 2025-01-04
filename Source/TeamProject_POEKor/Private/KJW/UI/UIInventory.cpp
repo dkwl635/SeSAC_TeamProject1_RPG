@@ -25,6 +25,7 @@ void UUIInventory::InitUI()
 		{
 			InvenSlot->SetSlotIndex(SlotIndex);
 			InvenSlot->SetSlot(nullptr);
+			InvenSlot->SetParent(this);
 			InvenSlots.Add(InvenSlot);
 		}
 	}

@@ -50,3 +50,8 @@ bool UInvenSlot::IsMoveSlot()
 	return ItemIcon->GetVisibility() == ESlateVisibility::Visible;
 	
 }
+
+bool UInvenSlot::IsEmptySlot()
+{
+	return ItemIcon->GetVisibility() == ESlateVisibility::Hidden;
+}

@@ -25,6 +25,9 @@ void UUIPlayerInfo::InitUI()
 			UE_LOG(LogTemp, Warning, TEXT("UUIPlayerInfo::PlayerInven Yes"));
 		}
 	}
+	WBP_GearWeaponSlot->SetParent(this);
+	WBP_GearHapSlot->SetParent(this);
+	WBP_GearArmorSlot->SetParent(this);
 
 
 }

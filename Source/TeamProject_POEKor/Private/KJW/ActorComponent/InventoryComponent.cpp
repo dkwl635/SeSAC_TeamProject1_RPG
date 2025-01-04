@@ -68,12 +68,39 @@ const TArray<class UItemBase*>& UInventoryComponent::GetInven()
 	return Inven;
 }
 
-const UItemBase* const UInventoryComponent::GetGearItem(EGearType GearType)
+UItemBase* const UInventoryComponent::GetInvenItem(int32 InvenIndex)
+{
+	if (InvenIndex < 0 || InvenIndex >= InventoryMax) { return nullptr; }
+	return Inven[InvenIndex];
+}
+
+UItemBase* const UInventoryComponent::GetGearItem(EGearType GearType)
 {
 	if (PlayerEqGears.Contains(GearType))
 	{
 		return PlayerEqGears[GearType];
 	}
 	return nullptr;
+}
+
+void UInventoryComponent::ClearInvenItem(int32 InvenIndex)
+{
+	if (InvenIndex < 0 || InvenIndex >= InventoryMax) { return; }
+
+	Inven[InvenIndex] = nullptr;
+}
+
+void UInventoryComponent::EquipGear(EGearType GearType, UItemBase* GearItem)
+{
+	if (!PlayerEqGears.Contains(GearType)){return;}
+
+	PlayerEqGears[GearType] = GearItem;
+}
+
+void UInventoryComponent::UnEquipGear(EGearType GearType)
+{
+	if (!PlayerEqGears.Contains(GearType)) { return; }
+
+	PlayerEqGears[GearType] = nullptr;
 }
 

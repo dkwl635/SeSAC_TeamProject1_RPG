@@ -5,7 +5,7 @@
 #include "KJW/OtherUI/Slot/UISlotBase.h"
 void UPOEGameInstance::Shutdown()
 {
-	UUISlotBase::IsOnClickedSlot = false;
-	UUISlotBase::ClickedSlot = nullptr;
 
+
+	Super::Shutdown();
 }

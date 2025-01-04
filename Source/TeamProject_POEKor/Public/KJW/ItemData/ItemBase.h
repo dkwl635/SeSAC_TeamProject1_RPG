@@ -22,9 +22,9 @@ public:
 	int32 CurrentQuantity;
 
 public:
-	void InitializeItem(const FItemData& Data, int32 InitQuantity = 1)
+	virtual void InitializeItem(const FItemData& Data, int32 InitQuantity = 1)
 	{
-		ItemData = Data;
+		ItemData.Copy(Data);
 		CurrentQuantity = InitQuantity;
 	}
 

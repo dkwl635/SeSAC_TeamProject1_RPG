@@ -18,6 +18,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UItemGameInstanceSubsystem> temGameInstanceSubsystemClass;
 
+
+
 public:
 	virtual void Shutdown() override;
 };

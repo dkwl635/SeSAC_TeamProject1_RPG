@@ -3,8 +3,6 @@
 
 #include "KJW/OtherUI/Slot/UISlotBase.h"
 
-bool UUISlotBase::IsOnClickedSlot = false;
-UUISlotBase* UUISlotBase::ClickedSlot = nullptr;
 
 bool UUISlotBase::IsMoveSlot()
 {
@@ -13,11 +11,17 @@ bool UUISlotBase::IsMoveSlot()
 
 bool UUISlotBase::IsShowParent()
 {
+    UE_LOG(LogTemp, Warning, TEXT("IsShowParent ") );
     if (ParentUserWidget)
     {
         return ParentUserWidget->GetVisibility() == ESlateVisibility::Visible;
     }
 
+    return false;
+}
+
+bool UUISlotBase::IsEmptySlot()
+{
     return false;
 }
 

@@ -37,11 +37,14 @@ protected:
 	int32 SlotIndex = 0;
 
 public:
+	int32 GetSlotIndex() { return SlotIndex; }
 	void SetSlotIndex(int32 NewSlotIndex);
 	void SetSlot(class UItemBase* ItemBase);
 	void OnOffHoverImage(bool bOnHover);
 
 public:
 	virtual	bool IsMoveSlot() override;
+	virtual bool IsEmptySlot() override;
+
 
 };

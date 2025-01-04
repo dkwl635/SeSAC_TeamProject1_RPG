@@ -26,6 +26,8 @@ class TEAMPROJECT_POEKOR_API UUIBase : public UUserWidget
 
 protected:
 	bool bIsInit = false;
+public:
+
 	virtual void InitUI();
 protected:
 	UPROPERTY(VisibleAnywhere)
