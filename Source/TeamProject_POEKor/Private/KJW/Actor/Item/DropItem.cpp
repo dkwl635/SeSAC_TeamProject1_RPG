@@ -35,8 +35,8 @@ void ADropItem::OnCharacterOverlap(AActor* OtherActor)
 		{
 		Inven->AddItem(Item);
 		}
+	Destroy();
 	}
 
-	Destroy();
 }
 
