@@ -4,7 +4,7 @@
 #include "KJW/Subsystem/SlotGameInstanceSubsystem.h"
 #include "KJW/ActorComponent/InventoryComponent.h"
 #include "KJW/UI/UIPlayerMain.h"
-#include "KJW/ItemData/ItemBase.h"
+#include "KJW/ItemData/ItemHeader.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -43,7 +43,7 @@ void USlotGameInstanceSubsystem::OnClikedSlot(UUISlotBase* NewClickedSlot)
 		UE_LOG(LogTemp, Warning, TEXT("OtherClickedSlot"));
 		if (!ClickedSlot->IsShowParent())
 		{
-			SetNewClickSlot(NewClickedSlot);
+			ClearClickSlot();
 			return;
 		}
 
@@ -87,21 +87,42 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 	//Inven Item Swap
 	if (fromSlotType == EUISlotType::Inven && toSlotType == EUISlotType::Inven)
 	{
+		if (!SlotWorld.IsValid()) { return; }
 
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(SlotWorld.Get(), 0);
+		UInventoryComponent* Inven = PlayerController->GetPawn()->GetComponentByClass<UInventoryComponent>();
+		if (!Inven) { return; }
+
+		UUISlotBase* InvenBaseSlot = fromSlotType == EUISlotType::Inven ? FromSlot : ToSlot;
+		UUISlotBase* GearBaseSlot = fromSlotType == EUISlotType::Gear ? FromSlot : ToSlot;
+		
 		UInvenSlot* fromInvenSlot = Cast<UInvenSlot>(FromSlot);
 		UInvenSlot* toInvenSlot = Cast<UInvenSlot>(ToSlot);
+		int32 fromIndex = fromInvenSlot->GetSlotIndex();
+		int32 toIndex = toInvenSlot->GetSlotIndex();
 
 		//Move Item
 		if (toInvenSlot->IsEmptySlot())
 		{
-			
+			UItemBase* MoveItem = Inven->GetInvenItem(fromIndex);
+			Inven->ClearInvenItem(fromIndex);
+			Inven->AddItem(MoveItem, toIndex);
 		}
 		//Swap Item
 		else if (!toInvenSlot->IsEmptySlot())
 		{
-
+			UItemBase* ItemA = Inven->GetInvenItem(fromIndex);
+			UItemBase* ItemB = Inven->GetInvenItem(toIndex);
+			Inven->ClearInvenItem(fromIndex);
+			Inven->ClearInvenItem(toIndex);
+			Inven->AddItem(ItemA, toIndex);
+			Inven->AddItem(ItemB, fromIndex);
 		}
 
+		if (UIPlayerMain.IsValid())
+		{
+			UIPlayerMain->ShowUI(EUIType::Inven);
+		}
 
 	}
 	//Equip Item or UnEquip
@@ -117,10 +138,10 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 		UInvenSlot* InvenSlot = Cast<UInvenSlot>(InvenBaseSlot);
 		UGearSlot* GearSlot = Cast<UGearSlot>(GearBaseSlot);
 
+
 		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(SlotWorld.Get(), 0);
 		UInventoryComponent* Inven = PlayerController->GetPawn()->GetComponentByClass<UInventoryComponent>();
 		if (!Inven) { return; }
-
 
 		//Equip
 		if (GearSlot->IsEmptySlot())
@@ -129,28 +150,52 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 			int32 InvenIndex = InvenSlot->GetSlotIndex();
 			UItemBase* EqItem = Inven->GetInvenItem(InvenIndex);
 
-		
+			if (EqItem->GetItemType() != EItemType::Gear) { return; }
+
+			UGearItem* EqGearItem = Cast<UGearItem>(EqItem);
+			if (!EqGearItem) { return; }
+			if (EqGearItem->GetGearType() != EqType) { return; }
 
 			Inven->ClearInvenItem(InvenIndex);
 			Inven->EquipGear(EqType, EqItem);
 
-			if (UIPlayerMain.IsValid())
-			{
-				UIPlayerMain->ShowUI(EUIType::Inven);
-				UIPlayerMain->ShowUI(EUIType::PlayerInfo);
-			}
+			
 		}
 		//UnEquip
 		else if (InvenSlot->IsEmptySlot())
 		{
+			EGearType EqType = GearSlot->GearType;
+			int32 InvenIndex = InvenSlot->GetSlotIndex();
+			UItemBase* UnEqItem = Inven->GetGearItem(EqType);
 
+			Inven->UnEquipGear(EqType);
+			Inven->AddItem(UnEqItem, InvenIndex);		
 		}
 		//Gear Swap
 		else if (!InvenSlot->IsEmptySlot() && !GearSlot->IsEmptySlot())
 		{
+			EGearType EqType = GearSlot->GearType;
+			int32 InvenIndex = InvenSlot->GetSlotIndex();
+			UItemBase* EqItem = Inven->GetInvenItem(InvenIndex);
 
+			if (EqItem->GetItemType() != EItemType::Gear) { return; }
+
+			UGearItem* EqGearItem = Cast<UGearItem>(EqItem);
+			if (!EqGearItem) { return; }
+			if (EqGearItem->GetGearType() != EqType) { return; }
+
+			UItemBase* UnEqItem = Inven->GetGearItem(EqType);
+
+			Inven->EquipGear(EqType, EqItem);
+			Inven->AddItem(UnEqItem, InvenIndex);
+			
 		}
-
+		
+		if (UIPlayerMain.IsValid())
+		{
+			UIPlayerMain->ShowUI(EUIType::Inven);
+			UIPlayerMain->ShowUI(EUIType::PlayerInfo);
+		}
 
 	}
 

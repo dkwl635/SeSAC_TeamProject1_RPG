@@ -21,7 +21,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UGearSlot* WBP_GearWeaponSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UGearSlot* WBP_GearHapSlot;
+	class UGearSlot* WBP_GearHatSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UGearSlot* WBP_GearArmorSlot;
 

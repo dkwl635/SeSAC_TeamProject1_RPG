@@ -46,7 +46,7 @@ protected :
 
 public:
 	void AddItem(class UItemBase* NewItemBase);
-
+	void AddItem(class UItemBase* NewItemBase, int32 InvenIndex);
 	UPROPERTY(BlueprintAssignable)
 	FOnInventoryChanged OnInventoryChanged;
 
@@ -54,9 +54,9 @@ public:
 	FOnInventoryChanged OnGearChanged;
 
 public:
-	const TArray<class UItemBase*>& GetInven();
-	UItemBase* const GetInvenItem(int32 InvenIndex);
-	UItemBase* const GetGearItem(EGearType GearType);
+	TArray<class UItemBase*>& GetInven();
+	UItemBase* GetInvenItem(int32 InvenIndex);
+	UItemBase* GetGearItem(EGearType GearType);
 
 public:
 	void ClearInvenItem(int32 InvenIndex);

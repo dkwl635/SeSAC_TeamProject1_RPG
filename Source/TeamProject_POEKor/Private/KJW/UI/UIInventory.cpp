@@ -49,10 +49,10 @@ void UUIInventory::ShowUI()
 {
 	Super::ShowUI();
 
-	for (int i = 0; i < InvenSlots.Num(); i++)
-	{
-		InvenSlots[i]->OnOffHoverImage(false);
-	}
+	//for (int i = 0; i < InvenSlots.Num(); i++)
+	//{
+	//	InvenSlots[i]->OnOffHoverImage(false);
+	//}
 
 	SetInvenSlots();
 }

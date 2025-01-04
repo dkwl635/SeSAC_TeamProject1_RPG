@@ -26,9 +26,11 @@ void UUIPlayerInfo::InitUI()
 		}
 	}
 	WBP_GearWeaponSlot->SetParent(this);
-	WBP_GearHapSlot->SetParent(this);
+	WBP_GearWeaponSlot->GearType = EGearType::Weapon;
+	WBP_GearHatSlot->SetParent(this);
+	WBP_GearHatSlot->GearType = EGearType::Hat;
 	WBP_GearArmorSlot->SetParent(this);
-
+	WBP_GearArmorSlot->GearType = EGearType::Armor;
 
 }
 
@@ -49,7 +51,7 @@ void UUIPlayerInfo::SetGearSlots()
 	if (PlayerInven)
 	{
 		WBP_GearWeaponSlot->SetSlot(PlayerInven->GetGearItem(EGearType::Weapon));
-		WBP_GearHapSlot->SetSlot(PlayerInven->GetGearItem(EGearType::Hat));
+		WBP_GearHatSlot->SetSlot(PlayerInven->GetGearItem(EGearType::Hat));
 		WBP_GearArmorSlot->SetSlot(PlayerInven->GetGearItem(EGearType::Armor));
 
 	}

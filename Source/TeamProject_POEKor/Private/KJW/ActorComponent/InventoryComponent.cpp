@@ -56,25 +56,30 @@ void UInventoryComponent::AddItem(UItemBase* NewItemBase)
 	//Inven.Add(NewItemBase);
 
 	if (OnInventoryChanged.IsBound())
-	{
-		
+	{	
 		OnInventoryChanged.Broadcast();
 	}
 
 }
 
-const TArray<class UItemBase*>& UInventoryComponent::GetInven() 
+void UInventoryComponent::AddItem(UItemBase* NewItemBase, int32 InvenIndex)
+{
+	if (InvenIndex < 0 || InvenIndex >= InventoryMax) { return; }
+	Inven[InvenIndex] = NewItemBase;
+}
+
+TArray<class UItemBase*>& UInventoryComponent::GetInven() 
 {
 	return Inven;
 }
 
-UItemBase* const UInventoryComponent::GetInvenItem(int32 InvenIndex)
+UItemBase* UInventoryComponent::GetInvenItem(int32 InvenIndex)
 {
 	if (InvenIndex < 0 || InvenIndex >= InventoryMax) { return nullptr; }
 	return Inven[InvenIndex];
 }
 
-UItemBase* const UInventoryComponent::GetGearItem(EGearType GearType)
+UItemBase* UInventoryComponent::GetGearItem(EGearType GearType)
 {
 	if (PlayerEqGears.Contains(GearType))
 	{
