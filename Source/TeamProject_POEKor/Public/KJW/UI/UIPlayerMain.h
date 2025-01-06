@@ -18,10 +18,16 @@ class TEAMPROJECT_POEKOR_API UUIPlayerMain : public UUserWidget
 {
 	GENERATED_BODY()
 	
+protected:
+	UPROPERTY(EditAnywhere)
+	int32 PlayerUIZOredr = 10;
 
 public:
 	UPROPERTY()
 	TMap<EUIType, UUIBase*> UIMap;
+	UPROPERTY()
+	TArray<UUIBase*> UIList;
+
 public:
 
 	virtual void NativeConstruct() override;
@@ -29,7 +35,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ShowUI(EUIType UIType);
+	UFUNCTION(BlueprintCallable)
+	void HideUI(EUIType UIType);
 
 	UFUNCTION(BlueprintCallable)
 	void ToggleUI(EUIType UIType);
+
+private:
+	void UpdateZOrder();
 };

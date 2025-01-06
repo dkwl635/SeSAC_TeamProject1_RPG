@@ -20,10 +20,16 @@ public :
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	class UDataTable* ItemDataTable = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class ADropItem> DropItemClass;
+
 
 public: 
 	UFUNCTION(BlueprintCallable)
 	UItemBase* GetNewItem(int32 UniqueID , int32 CurrentQuantity = 1);
+
+	UFUNCTION(BlueprintCallable)
+	ADropItem* GetNewDropItem(int32 UniqueID, int32 CurrentQuantity, AActor* Owner);
 
 	bool GetItemData(FItemData& RefItemData, int32 UniqueID);
 	FName GetItemTableRowName(int32 UniqueID);

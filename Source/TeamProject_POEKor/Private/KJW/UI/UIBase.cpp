@@ -1,11 +1,25 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "KJW/UI/UIBase.h"
+#include "Components/CanvasPanelSlot.h"
+
 
 void UUIBase::InitUI()
 {
+	
+	
+}
 
+UCanvasPanelSlot* UUIBase::GetCanvasSlot()
+{
+	if (!CanvasSlot)
+	{
+		if (UCanvasPanelSlot* CurCanvasSlot = Cast<UCanvasPanelSlot>(Slot))
+		{
+			CanvasSlot = CurCanvasSlot;
+		}
+	}
+
+	return CanvasSlot;
 }
 
 void UUIBase::ShowUI()
@@ -43,4 +57,12 @@ bool UUIBase::ToggleUI()
 	}
 
 	
+}
+
+void UUIBase::SetZOrder(int32 NewZOrder)
+{
+	UCanvasPanelSlot* Canvas = GetCanvasSlot();
+	if (!Canvas) { return; }
+
+	Canvas->SetZOrder(NewZOrder);
 }

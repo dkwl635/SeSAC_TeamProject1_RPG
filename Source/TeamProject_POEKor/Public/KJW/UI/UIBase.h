@@ -32,8 +32,11 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	EUIType UIType = EUIType::NONE;
+
+	class UCanvasPanelSlot* CanvasSlot = nullptr;
 public:
 	EUIType GetUIType() { return UIType; }
+	class UCanvasPanelSlot* GetCanvasSlot();
 public:
 	
 	virtual void ShowUI();
@@ -43,4 +46,7 @@ public:
 
 	//return UI Show(true)/Hide(false)
 	virtual bool ToggleUI();
+
+	virtual void SetZOrder(int32 NewZOrder);
+
 };

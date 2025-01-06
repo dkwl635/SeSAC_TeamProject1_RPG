@@ -2,6 +2,7 @@
 
 
 #include "KJW/Subsystem/ItemGameInstanceSubsystem.h"
+#include "KJW/Actor/Item/DropItem.h"
 
 
 UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQuantity)
@@ -27,6 +28,21 @@ UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQ
 
 
     return nullptr;
+}
+
+ADropItem* UItemGameInstanceSubsystem::GetNewDropItem(int32 UniqueID, int32 CurrentQuantity, AActor* Owner)
+{
+ 
+    FVector SpawnLocation = Owner->GetActorLocation();
+    FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
+
+    ADropItem* DropItem = Owner->GetWorld()->SpawnActor<ADropItem>(DropItemClass , SpawnLocation , SpawnRotation);
+
+    UItemBase* ItemBase = GetNewItem(UniqueID, CurrentQuantity);
+    DropItem->Item = ItemBase;
+
+
+    return DropItem;
 }
 
 bool UItemGameInstanceSubsystem::GetItemData(FItemData& RefItemData, int32 UniqueID)
