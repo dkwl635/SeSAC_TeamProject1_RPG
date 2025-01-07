@@ -48,7 +48,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AtkPower = 10.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AtkDistance = 100.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float TargetDistance = 700.f;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
 

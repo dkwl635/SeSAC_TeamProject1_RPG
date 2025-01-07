@@ -17,8 +17,12 @@ EBTNodeResult::Type UFindTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 	ACharacter* Target = Cast<ACharacter>(TargetObject);
 	AAIController* AIController = OwnerComp.GetAIOwner();
 	
-	FVector ActorLocation = AIController->GetPawn()->GetActorLocation();
 
+	float TargetDistance = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(TargetDistanceKeyName);
+	float AttackDistance = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(AttackDistanceKeyName);
+
+	FVector ActorLocation = AIController->GetPawn()->GetActorLocation();
+	
 	if (Target)
 	{
 		 //FVector TargetLocation = Target->GetActorLocation();

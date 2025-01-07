@@ -15,13 +15,14 @@ class TEAMPROJECT_POEKOR_API UFindTarget : public UBTTaskNode
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere , BlueprintReadWrite)
-	float TargetDistance;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float AttackDistance;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName TargetKeyName;
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName AttackDistanceKeyName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName TargetDistanceKeyName;
+
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	

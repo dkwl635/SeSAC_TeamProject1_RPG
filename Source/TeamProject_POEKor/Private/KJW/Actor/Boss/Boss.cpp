@@ -121,6 +121,10 @@ void ABoss::TickState()
 		{
 			NewBossState = EBossState::Pattern1;
 		}
+		else if (IsStartPattern2())
+		{
+			NewBossState = EBossState::Pattern2;
+		}
 		else if (TargetDistance <= NormalAttackDistance && NormalAttackCoolTimer <= 0.f)
 		{
 			NewBossState = EBossState::NormalAttack;
@@ -149,6 +153,7 @@ void ABoss::TickCool()
 	if (NormalAttackCoolTimer > 0 && BossState == EBossState::Idle) { NormalAttackCoolTimer -= WorldDeltaTime; }
 	if (IdleCoolTimer > 0 && BossState == EBossState::Idle) { IdleCoolTimer -= WorldDeltaTime; }
 	if (Pattern1CoolTimer > 0 && BossState != EBossState::Pattern1) { Pattern1CoolTimer -= WorldDeltaTime; }
+	if (Pattern2CoolTimer > 0 && BossState != EBossState::Pattern2) { Pattern2CoolTimer -= WorldDeltaTime; }
 }
 
 void ABoss::SetTarget(ACharacter* NewTarget)
@@ -180,6 +185,13 @@ void ABoss::SetNewState(EBossState NewBossState)
 		bool IsSuccess = AttackStart(EBossState::Pattern1);
 		Pattern1CoolTimer = Pattern1CoolTime;
 		if (IsSuccess) { NewBossState = EBossState::Pattern1; }
+		else { NewBossState = EBossState::Idle; }
+	}
+	else if (NewBossState == EBossState::Pattern2)
+	{
+		bool IsSuccess = AttackStart(EBossState::Pattern2);
+		Pattern2CoolTimer = Pattern2CoolTime;
+		if (IsSuccess) { NewBossState = EBossState::Pattern2; }
 		else { NewBossState = EBossState::Idle; }
 	}
 	else if (NewBossState == EBossState::Idle)
