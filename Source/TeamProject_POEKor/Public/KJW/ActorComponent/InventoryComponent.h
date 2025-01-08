@@ -8,6 +8,10 @@
 #include "InventoryComponent.generated.h"
 
 
+//
+class UItemBase;
+class UStatsActorComponent;
+
 // No arguments
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryChanged);
 
@@ -39,14 +43,14 @@ public:
 
 protected :
 	UPROPERTY(VisibleAnywhere, Instanced)
-	TArray<class UItemBase*> Inven;
+	TArray<UItemBase*> Inven;
 
 	UPROPERTY(VisibleAnywhere, Instanced)
-	TMap<EGearType, class UItemBase*> PlayerEqGears;
+	TMap<EGearType, UItemBase*> PlayerEqGears;
 
 public:
-	void AddItem(class UItemBase* NewItemBase);
-	void AddItem(class UItemBase* NewItemBase, int32 InvenIndex);
+	void AddItem(UItemBase* NewItemBase);
+	void AddItem(UItemBase* NewItemBase, int32 InvenIndex);
 	UPROPERTY(BlueprintAssignable)
 	FOnInventoryChanged OnInventoryChanged;
 
@@ -54,15 +58,22 @@ public:
 	FOnInventoryChanged OnGearChanged;
 
 public:
-	TArray<class UItemBase*>& GetInven();
+	TArray<UItemBase*>& GetInven();
 	UItemBase* GetInvenItem(int32 InvenIndex);
 	UItemBase* GetGearItem(EGearType GearType);
 
 public:
 	void ClearInvenItem(int32 InvenIndex);
-
 	void EquipGear(EGearType GearType , UItemBase* GearItem);
 	void UnEquipGear(EGearType GearType);
+	void SetGearStats(UItemBase* GearItem , bool bAddstats);
+private:
+	UPROPERTY()
+	UStatsActorComponent* StatsComponent;
+
+public :
+	UFUNCTION(BlueprintCallable)
+	void SetStatsComponent(UStatsActorComponent* NewStatsComponent);
 
 
 };

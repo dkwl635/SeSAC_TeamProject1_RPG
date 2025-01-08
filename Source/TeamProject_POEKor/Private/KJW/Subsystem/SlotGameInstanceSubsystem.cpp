@@ -3,7 +3,6 @@
 
 #include "KJW/Subsystem/SlotGameInstanceSubsystem.h"
 #include "KJW/ActorComponent/InventoryComponent.h"
-#include "KJW/UI/UIPlayerMain.h"
 #include "KJW/ItemData/ItemHeader.h"
 
 #include "Kismet/GameplayStatics.h"
@@ -73,10 +72,6 @@ void USlotGameInstanceSubsystem::FailedMoveSlot()
 	ClearClickSlot();
 }
 
-void USlotGameInstanceSubsystem::SetMainUserWidget(UUIPlayerMain* NewUIPlayerMain)
-{
-	UIPlayerMain = NewUIPlayerMain;
-}
 
 
 void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBase* ToSlot)
@@ -119,15 +114,12 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 			Inven->AddItem(ItemB, fromIndex);
 		}
 
-		if (UIPlayerMain.IsValid())
-		{
-			UIPlayerMain->ShowUI(EUIType::Inven);
-		}
+		
 
 	}
 	//Equip Item or UnEquip
 	else if ((fromSlotType == EUISlotType::Inven && toSlotType == EUISlotType::Gear) ||
-		(fromSlotType == EUISlotType::Gear && toSlotType == EUISlotType::Inven)) 
+		(fromSlotType == EUISlotType::Gear && toSlotType == EUISlotType::Inven))
 	{
 
 		if (!SlotWorld.IsValid()) { return; }
@@ -159,7 +151,7 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 			Inven->ClearInvenItem(InvenIndex);
 			Inven->EquipGear(EqType, EqItem);
 
-			
+
 		}
 		//UnEquip
 		else if (InvenSlot->IsEmptySlot())
@@ -169,7 +161,7 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 			UItemBase* UnEqItem = Inven->GetGearItem(EqType);
 
 			Inven->UnEquipGear(EqType);
-			Inven->AddItem(UnEqItem, InvenIndex);		
+			Inven->AddItem(UnEqItem, InvenIndex);
 		}
 		//Gear Swap
 		else if (!InvenSlot->IsEmptySlot() && !GearSlot->IsEmptySlot())
@@ -188,15 +180,8 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 
 			Inven->EquipGear(EqType, EqItem);
 			Inven->AddItem(UnEqItem, InvenIndex);
-			
-		}
-		
-		if (UIPlayerMain.IsValid())
-		{
-			UIPlayerMain->ShowUI(EUIType::Inven);
-			UIPlayerMain->ShowUI(EUIType::PlayerInfo);
-		}
 
+		}
 	}
 
 

@@ -3,6 +3,7 @@
 
 #include "KJW/ActorComponent/InventoryComponent.h"
 #include "KJW/ItemData/ItemHeader.h"
+#include "KJW/ActorComponent/StatsActorComponent.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -66,6 +67,12 @@ void UInventoryComponent::AddItem(UItemBase* NewItemBase, int32 InvenIndex)
 {
 	if (InvenIndex < 0 || InvenIndex >= InventoryMax) { return; }
 	Inven[InvenIndex] = NewItemBase;
+
+
+	if (OnInventoryChanged.IsBound())
+	{
+		OnInventoryChanged.Broadcast();
+	}
 }
 
 TArray<class UItemBase*>& UInventoryComponent::GetInven() 
@@ -93,6 +100,12 @@ void UInventoryComponent::ClearInvenItem(int32 InvenIndex)
 	if (InvenIndex < 0 || InvenIndex >= InventoryMax) { return; }
 
 	Inven[InvenIndex] = nullptr;
+
+
+	if (OnInventoryChanged.IsBound())
+	{
+		OnInventoryChanged.Broadcast();
+	}
 }
 
 void UInventoryComponent::EquipGear(EGearType GearType, UItemBase* GearItem)
@@ -100,12 +113,55 @@ void UInventoryComponent::EquipGear(EGearType GearType, UItemBase* GearItem)
 	if (!PlayerEqGears.Contains(GearType)){return;}
 
 	PlayerEqGears[GearType] = GearItem;
+	SetGearStats(GearItem , true);
+
+	if (OnGearChanged.IsBound())
+	{
+		OnGearChanged.Broadcast();
+	}
 }
 
 void UInventoryComponent::UnEquipGear(EGearType GearType)
 {
 	if (!PlayerEqGears.Contains(GearType)) { return; }
-
+	SetGearStats(PlayerEqGears[GearType], false);
 	PlayerEqGears[GearType] = nullptr;
+
+	if (OnGearChanged.IsBound())
+	{
+		OnGearChanged.Broadcast();
+	}
+}
+
+void UInventoryComponent::SetGearStats(UItemBase* GearItem , bool bAddstats)
+{
+	if (!StatsComponent) { return; }
+
+	UGearItem* GearData = Cast<UGearItem>(GearItem);
+	if (!GearData) { return; }
+
+	EGearType GearType = GearData->GetGearType();
+	float AddValueRate = bAddstats ? 1.f : -1.f;
+	float AddValue = GearData->GetAddStatus() * AddValueRate;
+	if (GearType == EGearType::Weapon)
+	{
+		StatsComponent->AddAtk(AddValue);
+	}
+	else if (GearType == EGearType::Hat)
+	{
+		StatsComponent->AddDef(AddValue);
+	}
+	else if (GearType == EGearType::Armor)
+	{
+		StatsComponent->AddMaxHp(AddValue);
+	}
+
+
+
+}
+
+void UInventoryComponent::SetStatsComponent(UStatsActorComponent* NewStatsComponent)
+{
+	StatsComponent = NewStatsComponent;
 }
 
