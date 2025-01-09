@@ -36,7 +36,10 @@ public:
 
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	class UFloatingPawnMovement* FloatingPawnMovement;
-
+	
+protected:
+	UPROPERTY()
+	class UEnemyHpBar* EnemyHpbar;
 
 public:
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
@@ -60,7 +63,7 @@ public:
 public:
 
 	//Check Enemy Die
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintPure)
 	bool IsDie();
 
 	//Monster Rot
@@ -72,6 +75,9 @@ public:
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//int32 Test = 0;
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetHpBar(UEnemyHpBar* NewEnemyHpBar);
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
@@ -85,7 +91,9 @@ public:
 	void DieStart();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void DieEnd();
-
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void HitEvnet();
+	
 public:
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 };

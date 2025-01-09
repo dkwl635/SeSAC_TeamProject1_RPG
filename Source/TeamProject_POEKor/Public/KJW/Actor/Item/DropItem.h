@@ -27,8 +27,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite , Instanced)
 	class UItemBase* Item = nullptr;
 
+public :
+	UFUNCTION(BlueprintCallable)
+	void AddItem();
 protected:
 	UFUNCTION(BlueprintCallable)
 	void OnCharacterOverlap(AActor* OtherActor);
 	
+
 };

@@ -26,6 +26,25 @@ void ADropItem::Tick(float DeltaTime)
 
 }
 
+void ADropItem::AddItem()
+{
+	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	if (PlayerPawn)
+	{
+		UInventoryComponent* Inven = PlayerPawn->GetComponentByClass<UInventoryComponent>();
+		if (Inven)
+		{
+			if (Item)
+			{
+				Inven->AddItem(Item);
+			}
+			Destroy();
+		}
+	}
+
+	
+}
+
 void ADropItem::OnCharacterOverlap(AActor* OtherActor)
 {
 	UInventoryComponent* Inven = OtherActor->GetComponentByClass<UInventoryComponent>();

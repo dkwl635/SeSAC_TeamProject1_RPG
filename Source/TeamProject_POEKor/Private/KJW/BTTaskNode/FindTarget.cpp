@@ -28,8 +28,8 @@ EBTNodeResult::Type UFindTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 		 //FVector TargetLocation = Target->GetActorLocation();
 		 //FVector::Distance(ActorLocation, TargetLocation);
 		 float Distance = AIController->GetPawn()->GetDistanceTo(Target);
-		 
-		 if (Distance <= AttackDistance)
+		
+		 if (Distance <= AttackDistance + 50)
 		 {
 			 return EBTNodeResult::Failed;
 			

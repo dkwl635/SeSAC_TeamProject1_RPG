@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
+#include "KJW/UI/Enemy/EnemyHpBar.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
 #include "GameFramework/Character.h"
@@ -33,6 +34,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Hp = MaxHp;
 	
 }
 
@@ -93,6 +95,15 @@ void AEnemy::SetTarget(ACharacter* NewTarget)
 	TargetCharacter = NewTarget;
 }
 
+void AEnemy::SetHpBar(UEnemyHpBar* NewEnemyHpBar)
+{
+	EnemyHpbar = NewEnemyHpBar;
+	if (EnemyHpbar)
+	{
+		EnemyHpbar->SetHpBarPercent(1.0f);
+	}
+}
+
 float AEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
@@ -105,10 +116,28 @@ float AEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControl
 	Hp -= Damage;
 	UE_LOG(LogTemp, Warning, TEXT("Enemy : %f") , Hp);
 	UE_LOG(LogTemp, Warning, TEXT("Damge : %f") , Damage);
+
+	
+
 	if (Hp <= 0)
 	{
 		DieStart();
+		
+		if (EnemyHpbar)
+		{
+			EnemyHpbar->SetHpBarPercent(0);
+		}
 	}
+	else
+	{
+		HitEvnet();
+		if (EnemyHpbar)
+		{
+			EnemyHpbar->SetHpBarPercent(Hp/MaxHp);
+		}
+	}
+
+
 
 	return 0.f;
 }
