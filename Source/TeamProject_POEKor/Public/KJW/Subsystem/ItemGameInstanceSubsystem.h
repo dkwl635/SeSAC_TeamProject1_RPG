@@ -37,4 +37,14 @@ private:
 
 	TMap<int32, FName> ItemTableFindRowName;
 
+
+private:
+	TWeakObjectPtr<class UItemInfoBox> ItemInfoBox;
+public :
+	void SetItemInfoBox(UItemInfoBox* NewItemInfoBox);
+	UFUNCTION(BlueprintCallable)
+	void ShowItemInfoBox(UItemBase* Item);
+	UFUNCTION(BlueprintCallable)
+	void HideItemInfoBox();
+
 };

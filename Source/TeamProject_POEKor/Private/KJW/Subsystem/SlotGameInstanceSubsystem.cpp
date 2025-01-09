@@ -1,12 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "KJW/Subsystem/SlotGameInstanceSubsystem.h"
 #include "KJW/ActorComponent/InventoryComponent.h"
+#include "KJW/OtherUI/Slot/UISlotHeader.h"
 #include "KJW/ItemData/ItemHeader.h"
-
+#include "KJW/ItemData/ItemDataTable.h"
 #include "Kismet/GameplayStatics.h"
-
 #include "Engine/GameViewportClient.h"
 #include "Blueprint/UserWidget.h"
 

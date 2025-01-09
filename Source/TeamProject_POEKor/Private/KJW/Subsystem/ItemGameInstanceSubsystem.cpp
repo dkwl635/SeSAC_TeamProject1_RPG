@@ -3,7 +3,7 @@
 
 #include "KJW/Subsystem/ItemGameInstanceSubsystem.h"
 #include "KJW/Actor/Item/DropItem.h"
-
+#include "KJW/UI/Item/ItemInfoBox.h"
 
 UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQuantity)
 {
@@ -39,7 +39,7 @@ ADropItem* UItemGameInstanceSubsystem::GetNewDropItem(int32 UniqueID, int32 Curr
     ADropItem* DropItem = Owner->GetWorld()->SpawnActor<ADropItem>(DropItemClass , SpawnLocation , SpawnRotation);
 
     UItemBase* ItemBase = GetNewItem(UniqueID, CurrentQuantity);
-    DropItem->Item = ItemBase;
+    DropItem->SetDropItem(ItemBase);
 
 
     return DropItem;
@@ -81,4 +81,25 @@ FName UItemGameInstanceSubsystem::GetItemTableRowName(int32 UniqueID)
 
 
     return rowName;
+}
+
+void UItemGameInstanceSubsystem::SetItemInfoBox(UItemInfoBox* NewItemInfoBox)
+{
+    ItemInfoBox = NewItemInfoBox;
+}
+
+void UItemGameInstanceSubsystem::ShowItemInfoBox(UItemBase* Item)
+{
+    if (ItemInfoBox.IsValid())
+    {
+        ItemInfoBox->SetItemInfoBox(Item);
+    }
+}
+
+void UItemGameInstanceSubsystem::HideItemInfoBox()
+{
+    if (ItemInfoBox.IsValid())
+    {
+        ItemInfoBox->HideInfoBox();
+    }
 }

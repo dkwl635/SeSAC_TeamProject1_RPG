@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "KJW/OtherUI/Slot/UISlotHeader.h"
 #include "SlotGameInstanceSubsystem.generated.h"
 
 /**
  * 
  */
+class UUISlotBase;
+
 UCLASS()
 class TEAMPROJECT_POEKOR_API USlotGameInstanceSubsystem : public UGameInstanceSubsystem
 {

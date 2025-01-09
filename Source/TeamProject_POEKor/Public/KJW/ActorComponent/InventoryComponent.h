@@ -12,6 +12,7 @@
 class UItemBase;
 class UStatsActorComponent;
 
+
 // No arguments
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryChanged);
 

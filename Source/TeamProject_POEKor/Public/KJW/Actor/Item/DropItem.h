@@ -15,6 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	ADropItem();
 
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -22,12 +23,25 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USphereComponent* SphereComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UWidgetComponent* WidgetComp;
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class UDropItemName> WBP_ItemName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite , Instanced)
 	class UItemBase* Item = nullptr;
 
+
+
 public :
+	UFUNCTION(BlueprintCallable)
+	void SetDropItem(UItemBase* NewItem);
+
 	UFUNCTION(BlueprintCallable)
 	void AddItem();
 protected:
