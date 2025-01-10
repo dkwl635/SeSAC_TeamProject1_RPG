@@ -25,6 +25,20 @@ void UItemInfoBox::SetItemInfoBox(UItemBase* Item)
 
 		TextBlock_ItemName->SetText(Item->GetItemName());
 		TextBlock_ItemDesc->SetText(Item->GetItemDesc());
+
+		if (Item->GetItemGrade() == EItemGrade::Uncommon)
+		{
+			TextBlock_ItemName->SetColorAndOpacity(FSlateColor(FLinearColor::Blue));
+		}
+		else if (Item->GetItemGrade() == EItemGrade::Rare)
+		{
+			TextBlock_ItemName->SetColorAndOpacity(FSlateColor(FLinearColor::Yellow));
+		}
+		else
+		{
+			TextBlock_ItemName->SetColorAndOpacity(FSlateColor(FLinearColor::White));
+		}
+
 		
 	}
 	this->SetVisibility(ESlateVisibility::Visible);

@@ -177,6 +177,7 @@ void USlotGameInstanceSubsystem::MoveSlotEvent(UUISlotBase* FromSlot, UUISlotBas
 
 			UItemBase* UnEqItem = Inven->GetGearItem(EqType);
 
+			Inven->UnEquipGear(EqType);
 			Inven->EquipGear(EqType, EqItem);
 			Inven->AddItem(UnEqItem, InvenIndex);
 
