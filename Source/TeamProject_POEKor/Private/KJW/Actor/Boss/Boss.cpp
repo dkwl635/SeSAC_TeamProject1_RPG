@@ -109,7 +109,8 @@ void ABoss::TickState()
 
 	EBossState NewBossState = BossState;
 
-	if (BossState != EBossState::NormalAttack && BossState != EBossState::Pattern1)
+	if (BossState != EBossState::NormalAttack && BossState != EBossState::Pattern1
+		&& BossState != EBossState::Pattern2)
 	{
 		if (TargetDistance <= NormalAttackDistance)
 		{
