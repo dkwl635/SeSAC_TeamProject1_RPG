@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "KJW/OtherUI/Slot/UISlotHeader.h"
 #include "SlotGameInstanceSubsystem.generated.h"
 
 /**
  * 
  */
+class UUISlotBase;
+
 UCLASS()
 class TEAMPROJECT_POEKOR_API USlotGameInstanceSubsystem : public UGameInstanceSubsystem
 {
@@ -17,8 +18,6 @@ class TEAMPROJECT_POEKOR_API USlotGameInstanceSubsystem : public UGameInstanceSu
 	
 
 
-protected:
-	TWeakObjectPtr<class UUIPlayerMain> UIPlayerMain;
 public:
 	bool IsOnClickedSlot;
 	TWeakObjectPtr<UUISlotBase> ClickedSlot;
@@ -30,8 +29,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void FailedMoveSlot();
 
-	UFUNCTION(BlueprintCallable)
-	void SetMainUserWidget(class UUIPlayerMain* NewUIPlayerMain);
 
 protected:
 	void ClearClickSlot();

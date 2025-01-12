@@ -20,15 +20,31 @@ public :
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	class UDataTable* ItemDataTable = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class ADropItem> DropItemClass;
+
 
 public: 
 	UFUNCTION(BlueprintCallable)
 	UItemBase* GetNewItem(int32 UniqueID , int32 CurrentQuantity = 1);
+
+	UFUNCTION(BlueprintCallable)
+	ADropItem* GetNewDropItem(int32 UniqueID, int32 CurrentQuantity, AActor* Owner);
 
 	bool GetItemData(FItemData& RefItemData, int32 UniqueID);
 	FName GetItemTableRowName(int32 UniqueID);
 private:
 
 	TMap<int32, FName> ItemTableFindRowName;
+
+
+private:
+	TWeakObjectPtr<class UItemInfoBox> ItemInfoBox;
+public :
+	void SetItemInfoBox(UItemInfoBox* NewItemInfoBox);
+	UFUNCTION(BlueprintCallable)
+	void ShowItemInfoBox(UItemBase* Item);
+	UFUNCTION(BlueprintCallable)
+	void HideItemInfoBox();
 
 };

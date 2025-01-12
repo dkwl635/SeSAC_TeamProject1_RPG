@@ -14,5 +14,6 @@ public class TeamProject_POEKor : ModuleRules
 		});
 
 		PrivateDefinitions.AddRange(new string[] { "Slate", "SlateCore" });
+	
 	}
 }

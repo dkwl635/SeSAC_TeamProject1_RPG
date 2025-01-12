@@ -15,6 +15,7 @@ enum class EBossState : uint8
 	NormalAttack UMETA(DisplayName = "NormalAttack"),
 	TrakingTarget UMETA(DisplayName = "TrakingTarget"),
 	Pattern1 UMETA(DisplayName = "Pattern1"),
+	Pattern2 UMETA(DisplayName = "Pattern2"),
 	
 };
 
@@ -88,6 +89,13 @@ protected:
 	float Pattern1CoolTimer = 1.f;
 	UPROPERTY(EditAnywhere, Category = "Pattern1")
 	float Pattern1CoolTime = 5.f;
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pattern2")
+	float Pattern2Distance = 600.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pattern2")
+	float Pattern2CoolTimer = 1.f;
+	UPROPERTY(EditAnywhere, Category = "Pattern2")
+	float Pattern2CoolTime = 5.f;
 protected:
 	UPROPERTY(EditAnywhere, Category = "NormalAttack")
 	float NormalAttackDistance = 300.f;
@@ -169,6 +177,8 @@ protected:
 	void EndAnimMontage(UAnimMontage* AnimMontage, bool IsEnded);
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	bool IsStartPattern1();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	bool IsStartPattern2();
 public:
 
 

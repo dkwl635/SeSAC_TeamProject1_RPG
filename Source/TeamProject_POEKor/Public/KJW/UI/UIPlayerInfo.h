@@ -6,7 +6,11 @@
 #include "KJW/UI/UIBase.h"
 #include "UIPlayerInfo.generated.h"
 
+
+class UGearSlot;
+class UTextBlock;
 /**
+
  * 
  */
 UCLASS()
@@ -19,11 +23,17 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UGearSlot* WBP_GearWeaponSlot;
+	UGearSlot* WBP_GearWeaponSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UGearSlot* WBP_GearHatSlot;
+	UGearSlot* WBP_GearHatSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-	class UGearSlot* WBP_GearArmorSlot;
+	UGearSlot* WBP_GearArmorSlot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* TextBlock_MaxHpValue;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* TextBlock_AtkValue;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* TextBlock_MaxDefValue;
 
 protected:
 	virtual void InitUI() override;
@@ -33,10 +43,14 @@ public:
 	virtual void HideUI() override;
 
 protected:
-	UFUNCTION()
 	void SetGearSlots();
+	void SetStats();
 
+	UFUNCTION()
+	void ChangeGearEvent();
 protected:
+	UPROPERTY()
 	class UInventoryComponent* PlayerInven;
-
+	UPROPERTY()
+	class UStatsActorComponent* StatsComponent;
 };
