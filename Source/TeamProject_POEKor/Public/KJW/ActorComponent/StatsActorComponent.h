@@ -31,28 +31,27 @@ private:
 	float Def = 1;
 
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable , BlueprintPure)
 	float GetMaxHp() {return MaxHp; }
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable , BlueprintPure)
 	float GetHp() {return Hp; }
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable , BlueprintPure)
 	float GetAtk() {return Atk; }
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable , BlueprintPure)
 	float GetDef() {return Def; }
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable , BlueprintPure)
 	float AddMaxHp(float AddValue);
 
 	UFUNCTION(BlueprintCallable)
 	float AddHp(float AddValue);
 
-	
-		UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable)
 	float AddAtk(float AddValue);
 
-			UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable)
 	float AddDef(float AddValue);
 };
