@@ -19,6 +19,7 @@ void UStatsActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Hp = MaxHp;
 	// ...
 }
 
