@@ -22,6 +22,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	int32 PlayerUIZOredr = 10;
 
+	UPROPERTY(EditAnywhere , meta = (BindWidget))
+	class UUIBottom* WBP_Bottom;
 public:
 	UPROPERTY()
 	TMap<EUIType, UUIBase*> UIMap;

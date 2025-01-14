@@ -29,24 +29,29 @@ float UStatsActorComponent::AddMaxHp(float AddValue)
 {
 	MaxHp += AddValue;
 
+	if (UpdateMaxHp.IsBound()) { UpdateMaxHp.Broadcast(); }
+
 	return MaxHp;
 }
 
 float UStatsActorComponent::AddHp(float AddValue)
 {
 	Hp += AddValue;
+	if (UpdateHp.IsBound()) { UpdateHp.Broadcast(); }
 	return Hp;
 }
 
 float UStatsActorComponent::AddAtk(float AddValue)
 {
 	Atk += AddValue;
+	if (UpdateAtk.IsBound()) { UpdateAtk.Broadcast(); }
 	return Atk;
 }
 
 float UStatsActorComponent::AddDef(float AddValue)
 {
 	Def += AddValue;
+	if (UpdateDef.IsBound()) { UpdateDef.Broadcast(); }
 	return Def;
 }
 

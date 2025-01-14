@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "StatsActorComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FUpdateStatsValue);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TEAMPROJECT_POEKOR_API UStatsActorComponent : public UActorComponent
@@ -54,4 +56,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float AddDef(float AddValue);
+
+	FUpdateStatsValue UpdateMaxHp;
+	FUpdateStatsValue UpdateHp;
+	FUpdateStatsValue UpdateAtk;
+	FUpdateStatsValue UpdateDef;
 };
