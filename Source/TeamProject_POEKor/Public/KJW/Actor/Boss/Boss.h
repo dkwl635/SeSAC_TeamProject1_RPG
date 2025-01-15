@@ -16,6 +16,7 @@ enum class EBossState : uint8
 	TrakingTarget UMETA(DisplayName = "TrakingTarget"),
 	Pattern1 UMETA(DisplayName = "Pattern1"),
 	Pattern2 UMETA(DisplayName = "Pattern2"),
+	Stun UMETA(DisplayName = "Stun"),
 	
 };
 
@@ -59,12 +60,14 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHp = 10.f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Hp = 10.f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AtkPower = 10.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float StunCount = 10; 
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float TrakingSpeed = 300.f;
