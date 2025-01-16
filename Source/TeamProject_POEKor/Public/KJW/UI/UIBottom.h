@@ -52,6 +52,20 @@ private:
 	UFUNCTION()
 	void ToggleInven();
 
+	
 	void SetHpOrb();
+	
+public:
+	UPROPERTY(EditAnywhere)
+	float TempHpPercent = 1.0f;
+	UPROPERTY(EditAnywhere)
+	float CurrentHpPercent = 1.0f;
+
+	float hpDelay = 0.f;
+	FTimerHandle HpTimeHandle;
+	UFUNCTION()
+	void HpBarLerp();
+	UFUNCTION()
+	void ShadowHpBarLerp();
 
 };

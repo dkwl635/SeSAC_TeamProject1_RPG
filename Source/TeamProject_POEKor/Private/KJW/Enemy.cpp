@@ -118,23 +118,18 @@ float AEnemy::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControl
 	UE_LOG(LogTemp, Warning, TEXT("Damge : %f") , Damage);
 
 	
+	if (EnemyHpbar)
+	{
+		EnemyHpbar->SetHpBarPercent(Hp / MaxHp);
+	}
 
 	if (Hp <= 0)
 	{
 		DieStart();
-		
-		if (EnemyHpbar)
-		{
-			EnemyHpbar->SetHpBarPercent(0);
-		}
 	}
 	else
 	{
 		HitEvnet();
-		if (EnemyHpbar)
-		{
-			EnemyHpbar->SetHpBarPercent(Hp/MaxHp);
-		}
 	}
 
 

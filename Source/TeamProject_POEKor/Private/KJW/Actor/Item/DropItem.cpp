@@ -17,10 +17,12 @@ ADropItem::ADropItem()
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
 	ItemBeamComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("ItemBeamComp"));
+	DropItemMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropItemMeshComp"));
 
 	SetRootComponent(SphereComp);
 	WidgetComp->SetupAttachment(SphereComp);
 	ItemBeamComp->SetupAttachment(RootComponent);
+	DropItemMeshComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -67,6 +69,12 @@ void ADropItem::SetDropItem(UItemBase* NewItem)
 
 			ItemBeamComp->SetNiagaraVariableLinearColor(TEXT("MyColor"), MyColor);
 		}
+
+		if (DropItemMeshComp)
+		{
+			DropItemMeshComp->SetStaticMesh(Item->GetItemMesh());
+		}
+
 
 	}
 }

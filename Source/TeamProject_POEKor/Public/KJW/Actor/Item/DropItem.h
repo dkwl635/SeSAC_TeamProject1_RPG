@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetComponent* WidgetComp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UStaticMeshComponent* DropItemMeshComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UNiagaraComponent* ItemBeamComp;
 
 public:

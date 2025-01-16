@@ -23,6 +23,14 @@ void UStatsActorComponent::BeginPlay()
 	// ...
 }
 
+void UStatsActorComponent::HealHp(float Value)
+{
+	Hp += Value;
+	if (Hp > MaxHp) { Hp = MaxHp; }
+
+	if (UpdateHp.IsBound()) { UpdateHp.Broadcast(); }
+}
+
 
 
 float UStatsActorComponent::AddMaxHp(float AddValue)

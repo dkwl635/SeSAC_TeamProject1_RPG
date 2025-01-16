@@ -31,6 +31,9 @@ private:
 	float Atk = 10;
 	UPROPERTY(EditAnywhere ,Category = "Stats")
 	float Def = 1;
+public:
+	UFUNCTION(BlueprintCallable)
+	void HealHp(float Value);
 
 public:
 	UFUNCTION(BlueprintCallable , BlueprintPure)

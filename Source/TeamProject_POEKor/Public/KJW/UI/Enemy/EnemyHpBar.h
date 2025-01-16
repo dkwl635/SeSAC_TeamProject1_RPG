@@ -22,4 +22,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetHpBarPercent(float percent);
 
+public :
+	UPROPERTY(EditAnywhere)
+	float TempHpPercent = 1.0f;
+	UPROPERTY(EditAnywhere)
+	float CurrentHpPercent = 1.0f;
+
+	FTimerHandle HpTimeHandle;
+
+	UFUNCTION()
+	void HpBarLerp();
 };

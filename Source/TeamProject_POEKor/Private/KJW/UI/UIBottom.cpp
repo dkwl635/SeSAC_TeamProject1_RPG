@@ -66,13 +66,45 @@ void UUIBottom::SetHpOrb()
 		TextBlock_Hp->SetText(FText::AsNumber(Hp));
 		TextBlock_MaxHp->SetText(FText::AsNumber(MaxHp));
 
-		float percent = 0;
-		if (Hp > 0)
+		float percent = Hp / MaxHp;
+		CurrentHpPercent = percent;
+
+		if (FMath::IsNearlyEqual(TempHpPercent, CurrentHpPercent, 0.01f)) 
 		{
-			percent = Hp / MaxHp;
+			TempHpPercent = CurrentHpPercent;
+			ProgressBar_Hp->SetPercent(TempHpPercent);
+			return;
 		}
+
+		if (HpTimeHandle.IsValid())
+		{
+			hpDelay = 0.f;
+			//GetWorld()->GetTimerManager().ClearTimer(HpTimeHandle);
+		}
+		else
+		{
+			hpDelay = 0.f;
+			GetWorld()->GetTimerManager().SetTimer(HpTimeHandle, this, &ThisClass::HpBarLerp, 0.02f, true);
+		}
+
 		
-		ProgressBar_Hp->SetPercent(percent);
+	}
+
+}
+
+void UUIBottom::HpBarLerp()
+{
+	hpDelay += 0.02f;
+	TempHpPercent = FMath::Lerp(TempHpPercent, CurrentHpPercent, hpDelay);
+
+	UE_LOG(LogTemp, Warning, TEXT("%f"), TempHpPercent);
+	ProgressBar_Hp->SetPercent(TempHpPercent);
+
+	if (FMath::IsNearlyEqual(TempHpPercent, CurrentHpPercent, 0.01f))
+	{
+		TempHpPercent = CurrentHpPercent;
+		ProgressBar_Hp->SetPercent(TempHpPercent);
+		GetWorld()->GetTimerManager().ClearTimer(HpTimeHandle);
 	}
 }
 
