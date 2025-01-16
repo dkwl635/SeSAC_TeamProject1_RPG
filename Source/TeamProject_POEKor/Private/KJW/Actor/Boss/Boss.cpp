@@ -80,7 +80,7 @@ void ABoss::TickBoss()
 void ABoss::RotUpdate()
 {
 	if (!TargetCharacter) { return; }
-
+	if (BossState == EBossState::Stun) { return; }
 
 	if (bRotTarget)
 	{
@@ -109,7 +109,16 @@ void ABoss::TickState()
 
 	EBossState NewBossState = BossState;
 
-	if (BossState != EBossState::NormalAttack && BossState != EBossState::Pattern1
+	if (BossState == EBossState::Stun) 
+	{
+		//PlayMontageLength -= GetWorld()->GetDeltaSeconds();
+		//if (PlayMontageLength <= 0)
+		//{
+		//	NewBossState = EBossState::Idle;
+		//}
+		
+	}
+	else if (BossState != EBossState::NormalAttack && BossState != EBossState::Pattern1
 		&& BossState != EBossState::Pattern2)
 	{
 		if (TargetDistance <= NormalAttackDistance)
@@ -149,7 +158,7 @@ void ABoss::TickState()
 
 void ABoss::TickCool()
 {
-
+	if (BossState == EBossState::Stun) { return; }
 
 	if (NormalAttackCoolTimer > 0 && BossState == EBossState::Idle) { NormalAttackCoolTimer -= WorldDeltaTime; }
 	if (IdleCoolTimer > 0 && BossState == EBossState::Idle) { IdleCoolTimer -= WorldDeltaTime; }
@@ -205,6 +214,15 @@ void ABoss::SetNewState(EBossState NewBossState)
 	{
 		RotSpeed = OrginRotSpeed;
 		bRotTarget = true;
+	}
+	else if (NewBossState == EBossState::Stun)
+	{
+		bool IsSuccess = AttackStart(EBossState::Stun);
+	
+		RotSpeed = OrginRotSpeed;
+		bRotTarget = true;
+
+		if (!IsSuccess) { NewBossState = EBossState::Idle; }
 	}
 	else if (NewBossState == EBossState::Death)
 	{
@@ -278,8 +296,21 @@ float ABoss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 	if (Hp <= 0)
 	{
 		SetNewState(EBossState::Death);
+		return 0;
 		//DieStart();
 	}
+
+	if (BossState != EBossState::Stun)
+	{
+		StunCount--;
+		if (StunCount <= 0)
+		{
+			SetNewState(EBossState::Stun);
+			
+		}
+	}
+	
+
 
 	return 0.f;
 }
@@ -318,6 +349,18 @@ void ABoss::EndAnimMontage(UAnimMontage* AnimMontage , bool IsEnded)
 	{
 		return;
 	}
+
+	if (BossState == EBossState::Stun)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%d , STUN"), IsEnded);
+		if (IsEnded == false)
+		{
+			StunCount = 10;
+			SetNewState(EBossState::Idle);
+		}
+		return;
+	}
+
 
 	if (IsEnded == true)
 	{

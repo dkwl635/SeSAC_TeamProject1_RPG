@@ -6,17 +6,21 @@
 #include "Components/SphereComponent.h"
 #include "KJW/ActorComponent/InventoryComponent.h"
 #include "KJW/UI/Item/DropItemName.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 // Sets default values
 ADropItem::ADropItem()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
-	WidgetComp = CreateDefaultSubobject<UWidgetComponent>("WidgetComp");
+	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
+	ItemBeamComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("ItemBeamComp"));
 
 	SetRootComponent(SphereComp);
 	WidgetComp->SetupAttachment(SphereComp);
+	ItemBeamComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +41,7 @@ void ADropItem::Tick(float DeltaTime)
 void ADropItem::SetDropItem(UItemBase* NewItem)
 {
 	Item = NewItem;
+	if (!Item) return;
 
 	if (WidgetComp->GetWidget())
 	{
@@ -45,6 +50,24 @@ void ADropItem::SetDropItem(UItemBase* NewItem)
 		{
 			DropItemName->SetDropItem(this);
 		}
+
+		if (ItemBeamComp)
+		{
+			FColor MyColor;
+			MyColor.A = 0;
+
+			if (Item->GetItemGrade() == EItemGrade::Uncommon)
+			{
+				MyColor = FColor::Blue;
+			}
+			else if (Item->GetItemGrade() == EItemGrade::Rare)
+			{
+				MyColor = FColor::Yellow;
+			}
+
+			ItemBeamComp->SetNiagaraVariableLinearColor(TEXT("MyColor"), MyColor);
+		}
+
 	}
 }
 

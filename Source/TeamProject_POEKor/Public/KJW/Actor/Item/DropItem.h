@@ -29,6 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UWidgetComponent* WidgetComp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraComponent* ItemBeamComp;
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class UDropItemName> WBP_ItemName;
