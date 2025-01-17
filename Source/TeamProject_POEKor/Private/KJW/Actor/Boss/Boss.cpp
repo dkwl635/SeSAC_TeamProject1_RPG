@@ -43,7 +43,7 @@ void ABoss::BeginPlay()
 
 	}
 
-
+	bStunPossible = true;
 }
 
 // Called every frame
@@ -218,7 +218,7 @@ void ABoss::SetNewState(EBossState NewBossState)
 	else if (NewBossState == EBossState::Stun)
 	{
 		bool IsSuccess = AttackStart(EBossState::Stun);
-	
+		bStunPossible = false;
 		RotSpeed = OrginRotSpeed;
 		bRotTarget = true;
 
@@ -293,6 +293,9 @@ float ABoss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 	Hp -= Damage;
 	UE_LOG(LogTemp, Warning, TEXT("Boss : %f"), Hp);
 	UE_LOG(LogTemp, Warning, TEXT("Damge : %f"), Damage);
+
+	UpdateHp.Broadcast();
+
 	if (Hp <= 0)
 	{
 		SetNewState(EBossState::Death);
@@ -300,9 +303,10 @@ float ABoss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 		//DieStart();
 	}
 
-	if (BossState != EBossState::Stun)
+	if (BossState != EBossState::Stun && bStunPossible)
 	{
 		StunCount--;
+		UpdateStun.Broadcast();
 		if (StunCount <= 0)
 		{
 			SetNewState(EBossState::Stun);
@@ -356,6 +360,7 @@ void ABoss::EndAnimMontage(UAnimMontage* AnimMontage , bool IsEnded)
 		if (IsEnded == false)
 		{
 			StunCount = 10;
+			UpdateStun.Broadcast();
 			SetNewState(EBossState::Idle);
 		}
 		return;

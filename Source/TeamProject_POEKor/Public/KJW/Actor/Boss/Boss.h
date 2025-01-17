@@ -20,6 +20,8 @@ enum class EBossState : uint8
 	
 };
 
+DECLARE_MULTICAST_DELEGATE(FUpdateStatsValue);
+
 UCLASS()
 class TEAMPROJECT_POEKOR_API ABoss : public APawn
 {
@@ -113,9 +115,11 @@ private:
 	float WorldDeltaTime = 0.f;
 	float OrginRotSpeed = 0.f;
 
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
+	bool bStunPossible = false;
 public:
 	//Tick Boss Function
 	void TickBoss();
@@ -184,6 +188,8 @@ protected:
 	bool IsStartPattern2();
 public:
 
+	FUpdateStatsValue UpdateHp;
+	FUpdateStatsValue UpdateStun;
 
 
 

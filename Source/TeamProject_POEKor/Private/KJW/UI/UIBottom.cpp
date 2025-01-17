@@ -84,7 +84,7 @@ void UUIBottom::SetHpOrb()
 		else
 		{
 			hpDelay = 0.f;
-			GetWorld()->GetTimerManager().SetTimer(HpTimeHandle, this, &ThisClass::HpBarLerp, 0.02f, true);
+			GetWorld()->GetTimerManager().SetTimer(HpTimeHandle, this, &ThisClass::HpBarLerp, GetWorld()->GetDeltaSeconds(), true);
 		}
 
 		
@@ -94,8 +94,9 @@ void UUIBottom::SetHpOrb()
 
 void UUIBottom::HpBarLerp()
 {
-	hpDelay += 0.02f;
-	TempHpPercent = FMath::Lerp(TempHpPercent, CurrentHpPercent, hpDelay);
+	hpDelay += GetWorld()->GetDeltaSeconds();
+	TempHpPercent = FMath::FInterpTo(TempHpPercent, CurrentHpPercent, GetWorld()->GetDeltaSeconds(), 10.f);
+	//TempHpPercent = FMath::Lerp(TempHpPercent, CurrentHpPercent, hpDelay);
 
 	UE_LOG(LogTemp, Warning, TEXT("%f"), TempHpPercent);
 	ProgressBar_Hp->SetPercent(TempHpPercent);

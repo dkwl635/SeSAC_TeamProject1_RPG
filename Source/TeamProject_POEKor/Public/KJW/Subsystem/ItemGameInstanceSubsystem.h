@@ -23,7 +23,8 @@ public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<class ADropItem> DropItemClass;
 
-
+	UFUNCTION(BlueprintCallable)
+	void InitData(UWorld* World);
 public: 
 	UFUNCTION(BlueprintCallable)
 	UItemBase* GetNewItem(int32 UniqueID , int32 CurrentQuantity = 1);
@@ -33,6 +34,8 @@ public:
 
 	bool GetItemData(FItemData& RefItemData, int32 UniqueID);
 	FName GetItemTableRowName(int32 UniqueID);
+
+	
 private:
 
 	TMap<int32, FName> ItemTableFindRowName;

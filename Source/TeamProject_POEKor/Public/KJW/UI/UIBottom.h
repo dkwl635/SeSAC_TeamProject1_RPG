@@ -65,7 +65,6 @@ public:
 	FTimerHandle HpTimeHandle;
 	UFUNCTION()
 	void HpBarLerp();
-	UFUNCTION()
-	void ShadowHpBarLerp();
+
 
 };

@@ -5,6 +5,16 @@
 #include "KJW/Actor/Item/DropItem.h"
 #include "KJW/UI/Item/ItemInfoBox.h"
 
+void UItemGameInstanceSubsystem::InitData(UWorld* World)
+{
+    TArray<FName> RowNames = ItemDataTable->GetRowNames();
+    for (int32 i = 0; i < RowNames.Num(); i++)
+    {
+        FItemData* RowData = ItemDataTable->FindRow<FItemData>(RowNames[i], TEXT(""));
+        ItemTableFindRowName.Add(RowData->UniqueID, RowNames[i]);     
+    }
+}
+
 UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQuantity)
 {
     FItemData NewItemData;
@@ -22,7 +32,7 @@ UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQ
 
        
         NewItem->InitializeItem(NewItemData, CurrentQuantity);
-        UE_LOG(LogTemp, Warning, TEXT("NewItem %s"), *NewItem->GetItemName().ToString());
+        //UE_LOG(LogTemp, Warning, TEXT("NewItem %s"), *NewItem->GetItemName().ToString());
         return NewItem;
     }
 
@@ -32,7 +42,8 @@ UItemBase* UItemGameInstanceSubsystem::GetNewItem(int32 UniqueID, int32 CurrentQ
 
 ADropItem* UItemGameInstanceSubsystem::GetNewDropItem(int32 UniqueID, int32 CurrentQuantity, AActor* Owner)
 {
- 
+    if (!Owner) { return nullptr; }
+
     FVector SpawnLocation = Owner->GetActorLocation();
     FRotator SpawnRotation(0.0f, 0.0f, 0.0f);
 
@@ -55,7 +66,7 @@ bool UItemGameInstanceSubsystem::GetItemData(FItemData& RefItemData, int32 Uniqu
    FItemData* FindItemData = ItemDataTable->FindRow<FItemData>(rowName , TEXT(""));
    RefItemData = *FindItemData;
 
-    return true;
+   return true;
 }
 
 FName UItemGameInstanceSubsystem::GetItemTableRowName(int32 UniqueID)
