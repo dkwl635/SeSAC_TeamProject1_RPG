@@ -53,4 +53,8 @@ protected:
 	class UInventoryComponent* PlayerInven;
 	UPROPERTY()
 	class UStatsActorComponent* StatsComponent;
+
+
+
+
 };

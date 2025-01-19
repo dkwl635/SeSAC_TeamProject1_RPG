@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "StatsActorComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FUpdateStatsValue);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TEAMPROJECT_POEKOR_API UStatsActorComponent : public UActorComponent
@@ -29,6 +31,9 @@ private:
 	float Atk = 10;
 	UPROPERTY(EditAnywhere ,Category = "Stats")
 	float Def = 1;
+public:
+	UFUNCTION(BlueprintCallable)
+	void HealHp(float Value);
 
 public:
 	UFUNCTION(BlueprintCallable , BlueprintPure)
@@ -54,4 +59,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float AddDef(float AddValue);
+
+	FUpdateStatsValue UpdateMaxHp;
+	FUpdateStatsValue UpdateHp;
+	FUpdateStatsValue UpdateAtk;
+	FUpdateStatsValue UpdateDef;
 };

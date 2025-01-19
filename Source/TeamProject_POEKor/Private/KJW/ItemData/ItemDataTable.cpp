@@ -14,9 +14,9 @@ void FItemData::Copy(const FItemData& OtherItem)
     ItemName = OtherItem.ItemName;
     ItemDesc = OtherItem.ItemDesc;
     ItemIcon = OtherItem.ItemIcon;
+    ItemMesh = OtherItem.ItemMesh;
 
     StatusData = OtherItem.StatusData;
-
 
 }
 

@@ -16,8 +16,11 @@ enum class EBossState : uint8
 	TrakingTarget UMETA(DisplayName = "TrakingTarget"),
 	Pattern1 UMETA(DisplayName = "Pattern1"),
 	Pattern2 UMETA(DisplayName = "Pattern2"),
+	Stun UMETA(DisplayName = "Stun"),
 	
 };
+
+DECLARE_MULTICAST_DELEGATE(FUpdateStatsValue);
 
 UCLASS()
 class TEAMPROJECT_POEKOR_API ABoss : public APawn
@@ -59,12 +62,14 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxHp = 10.f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Hp = 10.f;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float AtkPower = 10.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float StunCount = 10; 
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float TrakingSpeed = 300.f;
@@ -110,9 +115,11 @@ private:
 	float WorldDeltaTime = 0.f;
 	float OrginRotSpeed = 0.f;
 
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ACharacter* TargetCharacter;
+	bool bStunPossible = false;
 public:
 	//Tick Boss Function
 	void TickBoss();
@@ -181,6 +188,8 @@ protected:
 	bool IsStartPattern2();
 public:
 
+	FUpdateStatsValue UpdateHp;
+	FUpdateStatsValue UpdateStun;
 
 
 

@@ -3,6 +3,7 @@
 
 #include "KJW/UI/UIPlayerMain.h"
 #include "KJW/UI/UIHeader.h"
+#include "KJW/UI/UIBottom.h"
 #include "KJW/OtherUI/Slot/UISlotBase.h"
 #include "Blueprint/WidgetTree.h"
 
@@ -38,6 +39,8 @@ void UUIPlayerMain::NativeConstruct()
 		}
 	}
 
+	WBP_Bottom->InitUI();
+	WBP_Bottom->SetMainUI(this);
 	
 }
 

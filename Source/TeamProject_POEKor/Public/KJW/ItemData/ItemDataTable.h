@@ -61,6 +61,8 @@ public:
     FText ItemName;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FText ItemDesc;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UStaticMesh* ItemMesh ;
 
 public:
     UPROPERTY(EditAnywhere , BlueprintReadWrite)
