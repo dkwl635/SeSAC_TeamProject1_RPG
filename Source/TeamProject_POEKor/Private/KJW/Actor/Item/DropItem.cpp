@@ -22,8 +22,8 @@ ADropItem::ADropItem()
 
 	SetRootComponent(SphereComp);
 	WidgetComp->SetupAttachment(SphereComp);
-	ItemBeamComp->SetupAttachment(RootComponent);
-	DropItemMeshComp->SetupAttachment(RootComponent);
+	ItemBeamComp->SetupAttachment(SphereComp);
+	DropItemMeshComp->SetupAttachment(SphereComp);
 }
 
 // Called when the game starts or when spawned
