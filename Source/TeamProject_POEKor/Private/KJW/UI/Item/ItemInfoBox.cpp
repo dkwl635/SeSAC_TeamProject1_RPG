@@ -41,7 +41,7 @@ void UItemInfoBox::SetItemInfoBox(UItemBase* Item)
 
 		
 	}
-	this->SetVisibility(ESlateVisibility::Visible);
+	this->SetVisibility(ESlateVisibility::HitTestInvisible);
 }
 
 void UItemInfoBox::HideInfoBox()
