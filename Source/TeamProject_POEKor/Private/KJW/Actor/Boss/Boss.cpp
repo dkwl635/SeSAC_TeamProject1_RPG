@@ -294,6 +294,11 @@ float ABoss::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 	UE_LOG(LogTemp, Warning, TEXT("Boss : %f"), Hp);
 	UE_LOG(LogTemp, Warning, TEXT("Damge : %f"), Damage);
 
+	if (Hp <= 0)
+	{
+		Hp = 0;
+	}
+
 	UpdateHp.Broadcast();
 
 	if (Hp <= 0)
